@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { base } from "$app/paths";
+
   interface Service {
     title: string;
     description: string;
@@ -102,20 +104,6 @@
               </li>
             {/each}
           </ul>
-
-          <a
-            href="/services/{service.title.toLowerCase().replace(/\s+/g, '-')}"
-            class="inline-flex items-center mt-6 text-primary hover:text-primary-dark"
-          >
-            Learn more
-            <svg class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fill-rule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </a>
         </div>
       {/each}
     </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   interface Strength {
     title: string;
     description: string;
@@ -44,7 +45,7 @@
     <!-- Background image -->
     <div class="absolute inset-0 z-0">
       <img
-        src="/cleveland-background.jpg"
+        src="{base}/cleveland-background.jpg"
         alt="Cleveland skyline"
         class="w-full h-full object-cover object-center"
       />
@@ -172,13 +173,13 @@
         </p>
         <div class="flex items-center justify-center gap-x-4">
           <a
-            href="/contact"
+            href={`${base}/contact`}
             class="rounded bg-[#0066cc] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#0052a3]"
           >
             Get Started Today
           </a>
           <a
-            href="/services"
+            href={`${base}/services`}
             class="text-sm font-semibold text-gray-900 hover:text-[#0066cc]"
           >
             Learn More →

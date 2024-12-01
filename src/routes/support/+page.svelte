@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { base } from "$app/paths";
+
   const supportOptions = [
     {
       title: "Phone Support",
@@ -36,7 +38,9 @@
         <p class="mt-4 text-base text-gray-600 italic">
           Please use the following contact information for technical support
           requests only. For all other inquiries please use the information and
-          form on the <a href="/contact" class="text-[#0066cc]">Contact Us</a>
+          form on the <a href="{base}/contact" class="text-[#0066cc]"
+            >Contact Us</a
+          >
           page.
         </p>
       </div>

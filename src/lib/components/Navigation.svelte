@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import { base } from "$app/paths";
   import type { NavItem } from "$lib/types/navigation";
   import { onMount } from "svelte";
 
@@ -37,14 +38,14 @@
             class="h-14 w-auto transition-all duration-300 {scrolled
               ? 'scale-90'
               : ''}"
-            src="/logo-r-min-blue.png"
+            src="{base}/logo-r-min-blue.png"
             alt="CSDS"
           />
         </div>
         <div class="hidden sm:ml-12 sm:flex sm:space-x-8">
           {#each items as item}
             <a
-              href={item.href}
+              href={`${base}${item.href}`}
               class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors duration-300 {$page
                 .url.pathname === item.href
                 ? 'border-b-2 border-primary text-gray-900'
@@ -139,7 +140,7 @@
   <div class="pt-24 pb-3 px-4">
     {#each items as item}
       <a
-        href={item.href}
+        href={`${base}${item.href}`}
         class="block py-2 text-base font-medium {$page.url.pathname ===
         item.href
           ? 'text-primary border-l-4 border-primary pl-3'

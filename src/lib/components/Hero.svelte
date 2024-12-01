@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import type { CTAButton } from "$lib/types/common";
 
   let { primaryCTA, secondaryCTA } = $props<{
@@ -10,7 +11,11 @@
 <section class="relative overflow-hidden w-full">
   <!-- Background Image -->
   <div class="absolute inset-0 w-full">
-    <img src="/hero-background.jpg" alt="" class="w-full h-full object-cover" />
+    <img
+      src="{base}/hero-background.jpg"
+      alt=""
+      class="w-full h-full object-cover"
+    />
     <!-- Overlay to ensure text readability -->
     <div class="absolute inset-0 bg-gray-900/50"></div>
   </div>

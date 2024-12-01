@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import type { FooterColumn, SocialLink } from "$lib/types/common";
 
   let { columns, socials } = $props<{
@@ -55,7 +56,7 @@
             {#each column.links as link}
               <li>
                 <a
-                  href={link.href}
+                  href={`${base}${link.href}`}
                   class="text-gray-300 hover:text-white transition-colors"
                 >
                   {link.title}
@@ -98,13 +99,13 @@
         </p>
         <div class="flex space-x-6">
           <a
-            href="/privacy-policy"
+            href={`${base}/privacy-policy`}
             class="text-gray-300 hover:text-white text-sm transition-colors"
           >
             Privacy Policy
           </a>
           <a
-            href="/terms"
+            href={`${base}/terms`}
             class="text-gray-300 hover:text-white text-sm transition-colors"
           >
             Terms of Service

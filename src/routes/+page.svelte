@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import Hero from "$lib/components/Hero.svelte";
   import AboutSection from "$lib/components/AboutSection.svelte";
   import ServicesSection from "$lib/components/ServicesSection.svelte";
@@ -17,13 +18,13 @@
 
   const primaryCTA: CTAButton = {
     text: "Get Started Today",
-    href: "/contact",
+    href: `${base}/contact`,
     variant: "primary",
   } as const;
 
   const secondaryCTA: CTAButton = {
     text: "Learn More About Our Services",
-    href: "/services",
+    href: `${base}/services`,
     variant: "secondary",
   } as const;
 
@@ -119,7 +120,7 @@
       "Discover how smart, scalable technology can transform the way you work.",
     primaryCTA: {
       text: "Contact Us Today",
-      href: "/contact",
+      href: "contact",
       variant: "primary",
     } as const,
   };

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import type { CTAButton } from "$lib/types/common";
 
   let { headline, subheadline, primaryCTA, secondaryCTA } = $props<{
@@ -31,14 +32,14 @@
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href={primaryCTA.href}
+          href={`${base}/${primaryCTA.href}`}
           class="inline-flex items-center justify-center px-8 py-3 border-2 border-white bg-white text-primary font-semibold rounded-md hover:bg-transparent hover:text-white transition-colors duration-300"
         >
           {primaryCTA.text}
         </a>
         {#if secondaryCTA}
           <a
-            href={secondaryCTA.href}
+            href={`${base}/${secondaryCTA.href}`}
             class="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-md hover:bg-white hover:text-primary transition-colors duration-300"
           >
             {secondaryCTA.text}

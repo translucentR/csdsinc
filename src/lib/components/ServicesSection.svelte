@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ServiceCard } from "$lib/types/common";
-
+  import { base } from "$app/paths";
   let { services } = $props<{
     services: ServiceCard[];
   }>();
@@ -80,7 +80,7 @@
 
     <div class="text-center mt-12">
       <a
-        href="/services"
+        href={`${base}/services`}
         class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300"
       >
         Explore All Services

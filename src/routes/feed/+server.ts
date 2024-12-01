@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { fetchBlogPosts } from '$lib/services/blog';
+import { base } from '$app/paths';
 
 export const GET: RequestHandler = async () => {
     const posts = await fetchBlogPosts();
@@ -14,8 +15,8 @@ export const GET: RequestHandler = async () => {
     xmlns:slash="http://purl.org/rss/1.0/modules/slash/">
     <channel>
         <title>Computer Systems Development Services</title>
-        <atom:link href="https://www.csdsinc.net/feed/" rel="self" type="application/rss+xml" />
-        <link>https://www.csdsinc.net</link>
+        <atom:link href="${base}/feed/" rel="self" type="application/rss+xml" />
+        <link>${base}</link>
         <description>IT Solutions and Managed Services for Businesses</description>
         <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
         <language>en-US</language>
@@ -23,9 +24,9 @@ export const GET: RequestHandler = async () => {
         <sy:updateFrequency>1</sy:updateFrequency>
         
         <image>
-            <url>https://www.csdsinc.net/favicon.png</url>
+            <url>${base}/favicon.png</url>
             <title>Computer Systems Development Services</title>
-            <link>https://www.csdsinc.net</link>
+            <link>${base}</link>
             <width>32</width>
             <height>32</height>
         </image>
@@ -33,11 +34,11 @@ export const GET: RequestHandler = async () => {
         ${posts.map(post => `
             <item>
                 <title>${escapeXml(post.title)}</title>
-                <link>https://www.csdsinc.net/blog/${post.slug}</link>
+                <link>${base}/blog/${post.slug}</link>
                 <pubDate>${new Date(post.date).toUTCString()}</pubDate>
                 <dc:creator><![CDATA[${post.author}]]></dc:creator>
                 ${post.categories.map(cat => `<category><![CDATA[${cat}]]></category>`).join('\n')}
-                <guid isPermaLink="false">https://www.csdsinc.net/blog/${post.slug}</guid>
+                <guid isPermaLink="false">${base}/blog/${post.slug}</guid>
                 <description><![CDATA[${post.excerpt}]]></description>
                 <content:encoded><![CDATA[${post.content}]]></content:encoded>
             </item>
