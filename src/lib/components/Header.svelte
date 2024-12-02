@@ -18,11 +18,7 @@
     <div class="flex lg:flex-1">
       <a href={base} class="-m-1.5 p-1.5">
         <span class="sr-only">CSDS</span>
-        <img
-          class="h-8 w-auto"
-          src="{base}/logo-r-min-blue.avif"
-          alt="CSDS Logo"
-        />
+        <img class="h-8 w-auto" src="{base}/logo-r-min.avif" alt="CSDS Logo" />
       </a>
     </div>
     <!-- Navigation links -->
