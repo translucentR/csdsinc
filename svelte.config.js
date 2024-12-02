@@ -18,7 +18,7 @@ const config = {
 		},
 		prerender: {
 			handleHttpError: ({ path, message }) => {
-				if (!path.includes('.') || path.includes('.jpg') || path.includes('.png') || path.includes('.jpeg') || path.includes('.gif')) {
+				if (!path.includes('.') || path.includes('.avif') || path.includes('.jpg') || path.includes('.png') || path.includes('.jpeg') || path.includes('.gif')) {
 					return;
 				}
 				throw new Error(message);

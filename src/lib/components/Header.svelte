@@ -20,7 +20,7 @@
         <span class="sr-only">CSDS</span>
         <img
           class="h-8 w-auto"
-          src="{base}/logo-r-min-blue.png"
+          src="{base}/logo-r-min-blue.avif"
           alt="CSDS Logo"
         />
       </a>

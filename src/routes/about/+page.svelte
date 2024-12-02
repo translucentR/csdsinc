@@ -46,7 +46,7 @@
     <!-- Background image -->
     <div class="absolute inset-0 z-0">
       <img
-        src="{base}/cleveland-background.jpg"
+        src="{base}/cleveland-background.avif"
         alt="Cleveland skyline"
         class="w-full h-full object-cover object-center"
       />

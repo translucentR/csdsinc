@@ -12,7 +12,7 @@
   <!-- Background Image -->
   <div class="absolute inset-0 w-full">
     <img
-      src="{base}/hero-background.jpg"
+      src="{base}/hero-background.avif"
       alt=""
       class="w-full h-full object-cover"
     />

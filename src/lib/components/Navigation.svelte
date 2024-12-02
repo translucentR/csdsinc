@@ -40,7 +40,7 @@
             class="h-14 w-auto transition-all duration-300 {scrolled
               ? 'scale-90'
               : ''}"
-            src="{base}/logo-r-min-blue.png"
+            src="{base}/logo-r-min-blue.avif"
             alt="CSDS"
           />
         </div>
