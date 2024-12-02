@@ -77,6 +77,7 @@
           </p>
           <a
             href={option.action.href}
+            target="_blank"
             class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-[#0066cc] hover:bg-[#0052a3] transition-colors duration-300"
           >
             {option.action.text}

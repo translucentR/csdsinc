@@ -12,8 +12,6 @@
     ServiceCard,
     Benefit,
     Testimonial,
-    FooterColumn,
-    SocialLink,
   } from "$lib/types/common";
 
   const primaryCTA: CTAButton = {
@@ -129,30 +127,6 @@
       variant: "primary",
     } as const,
   };
-
-  const footerColumns: FooterColumn[] = [
-    {
-      title: "Company",
-      links: [
-        { title: "About", href: "/about" },
-        { title: "Services", href: "/services" },
-        { title: "Blog", href: "/blog" },
-        { title: "Contact", href: "/contact" },
-      ],
-    },
-    {
-      title: "Support",
-      links: [
-        { title: "Support Center", href: "/support" },
-        // { title: "Knowledge Base", href: "/resources" },
-        // { title: "FAQ", href: "/faq" },
-      ],
-    },
-  ];
-
-  const socialLinks: SocialLink[] = [
-    { platform: "linkedin", href: "https://linkedin.com/company/csds" },
-  ];
 </script>
 
 <Hero {primaryCTA} {secondaryCTA} />
@@ -162,6 +136,5 @@
 <WhyChooseUs {benefits} />
 <TestimonialsSection {testimonials} />
 <CtaSection {...ctaContent} />
-<Footer columns={footerColumns} socials={socialLinks} />
 
 <!-- We'll add more sections here -->

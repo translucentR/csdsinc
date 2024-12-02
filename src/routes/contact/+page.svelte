@@ -1,3 +1,41 @@
+<script lang="ts">
+  import { base } from "$app/paths";
+  import "$lib/types/keap";
+
+  // Keap Forms Initialization
+  if (typeof window !== "undefined") {
+    const keapForms = window.keapForms || {
+      SNIPPET_VERSION: "1.1.0",
+      appId: "gga774",
+    };
+
+    const script = document.createElement("script");
+
+    script.type = "text/javascript";
+    script.crossOrigin = "anonymous";
+    script.defer = true;
+    script.src =
+      "https://forms.keap.app/lib/public-form-embed.js?appId=gga774&version=1.1.0";
+
+    script.onload = function () {
+      const keapFormsAfterLoad = window.keapForms;
+
+      if (!keapFormsAfterLoad.renderAllForms) {
+        // eslint-disable-next-line no-console
+        console.error("[Keap Forms] Error: could not load");
+      } else if (!keapFormsAfterLoad.invoked) {
+        keapFormsAfterLoad.invoked = true;
+        keapFormsAfterLoad.renderAllForms();
+      }
+    };
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    if (firstScriptTag?.parentNode) {
+      firstScriptTag.parentNode.insertBefore(script, firstScriptTag);
+    }
+    window.keapForms = keapForms;
+  }
+</script>
+
 <div class="bg-gray-50">
   <div class="relative py-16 sm:py-24">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
@@ -52,109 +90,22 @@
         <p class="text-lg text-gray-600">Or fill out our contact form below</p>
       </div>
 
-      <!-- Contact Form -->
+      <p
+        class="max-w-2xl mt-4 mb-4 text-base text-gray-600 italic mx-auto text-center"
+      >
+        Please use the following form for business inquiries. For technical
+        support, please use the information and form on the
+        <a href="{base}/support" class="text-[#0066cc]">Support Center</a> page.
+      </p>
+
+      <!-- Keap Contact Form -->
       <div class="max-w-2xl mx-auto">
-        <form class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label
-                for="firstName"
-                class="block text-sm font-medium text-gray-700 mb-1"
-              >
-                First Name *
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                required
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-              />
-            </div>
-            <div>
-              <label
-                for="lastName"
-                class="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Last Name *
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                required
-                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-              />
-            </div>
-          </div>
-          <div class="mb-6">
-            <label
-              for="company"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Company
-            </label>
-            <input
-              type="text"
-              id="company"
-              name="company"
-              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-            />
-          </div>
-          <div class="mb-6">
-            <label
-              for="email"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Email *
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-            />
-          </div>
-          <div class="mb-6">
-            <label
-              for="phone"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-            />
-          </div>
-          <div class="mb-8">
-            <label
-              for="message"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Message *
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              required
-              placeholder="How can we help you?"
-              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-            ></textarea>
-          </div>
-          <div>
-            <button
-              type="submit"
-              class="w-full py-3 px-4 border border-transparent text-base font-medium rounded-md text-white bg-[#0066cc] hover:bg-[#0052a3] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-300"
-            >
-              Send Message
-            </button>
-          </div>
-        </form>
+        <div
+          data-form-slug="7864230974329737"
+          data-env="production"
+          data-path="contact-us/7864230974329737"
+          class="keap-custom-form"
+        ></div>
       </div>
     </div>
   </div>
