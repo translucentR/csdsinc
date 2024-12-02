@@ -17,6 +17,8 @@
       scrolled = window.scrollY > 20;
     };
 
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -27,8 +29,8 @@
 <nav
   bind:this={navbar}
   class="fixed w-full z-50 transition-all duration-300 {scrolled
-    ? 'bg-white/90 backdrop-blur-sm shadow-md py-2'
-    : 'bg-transparent py-4'}"
+    ? 'bg-white shadow-md py-2'
+    : 'bg-white/90 backdrop-blur-sm py-4'}"
 >
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
@@ -49,13 +51,18 @@
               class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors duration-300 {$page
                 .url.pathname === item.href
                 ? 'border-b-2 border-primary text-gray-900'
-                : scrolled
-                  ? 'text-gray-400 hover:border-b-2 hover:border-primary hover:text-gray-900'
-                  : 'text-gray-400 hover:border-b-2 hover:border-primary hover:text-gray-900'}"
+                : 'text-gray-600 hover:border-b-2 hover:border-primary hover:text-gray-900'}"
             >
               {item.title}
             </a>
           {/each}
+
+          <a
+            href="{base}/support"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300"
+          >
+            Get Help
+          </a>
         </div>
       </div>
 

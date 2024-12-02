@@ -24,11 +24,6 @@
         <h3 class="text-lg font-semibold mb-4">Contact</h3>
         <div class="space-y-3 text-gray-300">
           <p class="font-medium">Computer Systems Development Services</p>
-          <address class="not-italic">
-            14414 Detroit Avenue<br />
-            Suite 302<br />
-            Lakewood, OH 44107
-          </address>
           <div class="space-y-1">
             <p>
               <span class="font-medium">Phone:</span>

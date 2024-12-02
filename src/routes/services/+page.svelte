@@ -49,6 +49,20 @@
         "Incident Response",
       ],
     },
+    {
+      title: "Custom Development & Integrations",
+      description:
+        "Specialized solutions tailored to your unique business requirements.",
+      icon: "code",
+      features: [
+        "Internal Application Development",
+        "Customer-Facing Websites",
+        "API Design & Implementation",
+        "Analytics & Tracking Systems",
+        "Database Management",
+        "System Integration",
+      ],
+    },
   ];
 </script>
 
@@ -71,22 +85,26 @@
 
   <!-- Services Grid -->
   <div class="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
       {#each services as service}
         <div
-          class="bg-white rounded-xl shadow-sm p-8 hover:shadow-md transition-shadow"
+          class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow flex flex-col"
         >
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">{service.title}</h2>
-          <p class="text-gray-600 mb-6">{service.description}</p>
+          <div class="min-h-[120px]">
+            <h2 class="text-xl font-bold text-gray-900 mb-3">
+              {service.title}
+            </h2>
+            <p class="text-sm text-gray-600">{service.description}</p>
+          </div>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-3">
+          <h3 class="text-base font-semibold text-gray-900 mb-2">
             Key Features:
           </h3>
-          <ul class="space-y-2">
+          <ul class="space-y-1.5">
             {#each service.features as feature}
               <li class="flex items-start">
                 <svg
-                  class="h-6 w-6 text-primary flex-shrink-0"
+                  class="h-5 w-5 text-primary flex-shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -98,7 +116,7 @@
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
-                <span class="ml-3 text-gray-600">{feature}</span>
+                <span class="ml-2 text-sm text-gray-600">{feature}</span>
               </li>
             {/each}
           </ul>

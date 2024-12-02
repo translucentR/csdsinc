@@ -1,16 +1,15 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import "$lib/types/keap";
+  import { onMount } from "svelte";
 
-  // Keap Forms Initialization
-  if (typeof window !== "undefined") {
+  function initializeKeapForms() {
     const keapForms = window.keapForms || {
       SNIPPET_VERSION: "1.1.0",
       appId: "gga774",
     };
 
     const script = document.createElement("script");
-
     script.type = "text/javascript";
     script.crossOrigin = "anonymous";
     script.defer = true;
@@ -21,19 +20,25 @@
       const keapFormsAfterLoad = window.keapForms;
 
       if (!keapFormsAfterLoad.renderAllForms) {
-        // eslint-disable-next-line no-console
         console.error("[Keap Forms] Error: could not load");
-      } else if (!keapFormsAfterLoad.invoked) {
+      } else {
         keapFormsAfterLoad.invoked = true;
         keapFormsAfterLoad.renderAllForms();
       }
     };
+
     const firstScriptTag = document.getElementsByTagName("script")[0];
     if (firstScriptTag?.parentNode) {
       firstScriptTag.parentNode.insertBefore(script, firstScriptTag);
     }
     window.keapForms = keapForms;
   }
+
+  onMount(() => {
+    if (typeof window !== "undefined") {
+      initializeKeapForms();
+    }
+  });
 </script>
 
 <div class="bg-gray-50">
@@ -53,23 +58,10 @@
       <!-- Contact Information -->
       <div class="max-w-2xl mx-auto mb-16">
         <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900 mb-8">Get in Touch</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <h2 class="text-xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h3 class="text-base font-semibold text-gray-900 mb-2">
-                Visit Us
-              </h3>
-              <address class="not-italic text-gray-600 leading-relaxed">
-                Computer Systems Development Services<br />
-                14414 Detroit Avenue<br />
-                Suite 302<br />
-                Lakewood, OH 44107
-              </address>
-            </div>
-            <div>
-              <h3 class="text-base font-semibold text-gray-900 mb-2">
-                Call Us
-              </h3>
+              <h3 class=" font-semibold text-gray-900 mb-2">Call Us</h3>
               <p class="text-gray-600">216-529-9019</p>
             </div>
             <div>

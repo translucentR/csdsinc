@@ -11,3 +11,8 @@ export const navigationItems: NavItem[] = [
     { title: 'Blog', href: '/blog' },
     { title: 'Contact', href: '/contact' },
 ];
+
+export const supportButton = {
+    title: 'Get Help',
+    href: '/support'
+};
