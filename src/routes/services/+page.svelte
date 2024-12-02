@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { base } from "$app/paths";
-
   interface Service {
     title: string;
     description: string;

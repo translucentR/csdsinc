@@ -44,26 +44,31 @@
       title: "Managed IT Services",
       description:
         "Comprehensive IT management so you can focus on growing your business.",
+      icon: "server",
     },
     {
       title: "Custom Digital Solutions",
       description:
         "From app development to seamless integrations, we build technology tailored to your business. Our team specializes in creating web, mobile, and desktop applications.",
+      icon: "code",
     },
     {
       title: "Network Security",
       description:
         "Safeguard your systems against cyber threats with advanced protection.",
+      icon: "shield",
     },
     {
       title: "Outsourced CIO Services",
       description:
         "Strategic IT guidance to align technology with your business goals.",
+      icon: "chart",
     },
     {
       title: "On-Demand IT Support",
       description:
         "Get the help you need, when you need it, with our 24/7 support team.",
+      icon: "hand",
     },
   ];
 

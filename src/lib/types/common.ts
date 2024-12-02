@@ -7,7 +7,7 @@ export interface CTAButton {
 export interface ServiceCard {
     title: string;
     description: string;
-    icon?: string;
+    icon: 'server' | 'code' | 'shield' | 'chart' | 'hand';
 }
 
 export interface Testimonial {
