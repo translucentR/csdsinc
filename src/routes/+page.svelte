@@ -1,17 +1,28 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import Hero from "$lib/components/Hero.svelte";
-  import AboutSection from "$lib/components/AboutSection.svelte";
-  import ServicesSection from "$lib/components/ServicesSection.svelte";
-  import WhyChooseUs from "$lib/components/WhyChooseUs.svelte";
-  import TestimonialsSection from "$lib/components/TestimonialsSection.svelte";
-  import CtaSection from "$lib/components/CtaSection.svelte";
-  import Footer from "$lib/components/Footer.svelte";
+  // import AboutSection from "$lib/components/AboutSection.svelte";
+  // import ServicesSection from "$lib/components/ServicesSection.svelte";
+  // import WhyChooseUs from "$lib/components/WhyChooseUs.svelte";
+  // import TestimonialsSection from "$lib/components/TestimonialsSection.svelte";
+  // import CtaSection from "$lib/components/CtaSection.svelte";
+  // import Footer from "$lib/components/Footer.svelte";
+  const AboutSection = import("$lib/components/AboutSection.svelte");
+  const ServicesSection = import("$lib/components/ServicesSection.svelte");
+  const WhyChooseUs = import("$lib/components/WhyChooseUs.svelte");
+  const TestimonialsSection = import(
+    "$lib/components/TestimonialsSection.svelte"
+  );
+  const CtaSection = import("$lib/components/CtaSection.svelte");
+  const Footer = import("$lib/components/Footer.svelte");
+
   import type {
     CTAButton,
     ServiceCard,
     Benefit,
     Testimonial,
+    FooterColumn,
+    SocialLink,
   } from "$lib/types/common";
 
   const primaryCTA: CTAButton = {
@@ -127,14 +138,60 @@
       variant: "primary",
     } as const,
   };
+
+  const footerColumns: FooterColumn[] = [
+    {
+      title: "Company",
+      links: [
+        { title: "About", href: "/about" },
+        { title: "Services", href: "/services" },
+        { title: "Blog", href: "/blog" },
+        { title: "Contact", href: "/contact" },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        { title: "Support Center", href: "/support" },
+        // { title: "Knowledge Base", href: "/resources" },
+        // { title: "FAQ", href: "/faq" },
+      ],
+    },
+  ];
+
+  const socialLinks: SocialLink[] = [
+    { platform: "linkedin", href: "https://linkedin.com/company/csds" },
+  ];
 </script>
 
 <Hero {primaryCTA} {secondaryCTA} />
 
-<AboutSection {...aboutContent} />
-<ServicesSection {services} />
-<WhyChooseUs {benefits} />
-<TestimonialsSection {testimonials} />
-<CtaSection {...ctaContent} />
+{#await AboutSection then module}
+  <svelte:component this={module.default} {...aboutContent} />
+{/await}
+
+{#await ServicesSection then module}
+  <svelte:component this={module.default} {services} />
+{/await}
+
+{#await WhyChooseUs then module}
+  <svelte:component this={module.default} {benefits} />
+{/await}
+
+{#await TestimonialsSection then module}
+  <svelte:component this={module.default} {testimonials} />
+{/await}
+
+{#await CtaSection then module}
+  <svelte:component this={module.default} {...ctaContent} />
+{/await}
+
+{#await Footer then module}
+  <svelte:component
+    this={module.default}
+    columns={footerColumns}
+    socials={socialLinks}
+  />
+{/await}
 
 <!-- We'll add more sections here -->
