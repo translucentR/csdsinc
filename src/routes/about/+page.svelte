@@ -45,11 +45,29 @@
   <div class="relative">
     <!-- Background image -->
     <div class="absolute inset-0 z-0">
-      <img
-        src="{base}/cleveland-background.avif"
-        alt="Cleveland skyline"
-        class="w-full h-full object-cover object-center"
-      />
+      <picture>
+        <source
+          media="(max-width: 640px)"
+          srcset="{base}/cleveland-background-mobile.avif"
+          width="640"
+          height="360"
+        />
+        <source
+          media="(max-width: 1024px)"
+          srcset="{base}/cleveland-background-tablet.avif"
+          width="1024"
+          height="576"
+        />
+        <img
+          src="{base}/cleveland-background.avif"
+          alt="Cleveland skyline"
+          width="1920"
+          height="1080"
+          class="w-full h-full object-cover object-center"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </picture>
       <div class="absolute inset-0 bg-black/50"></div>
     </div>
 

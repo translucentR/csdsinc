@@ -11,11 +11,29 @@
 <section class="relative overflow-hidden w-full">
   <!-- Background Image -->
   <div class="absolute inset-0 w-full">
-    <img
-      src="{base}/hero-background.avif"
-      alt=""
-      class="w-full h-full object-cover"
-    />
+    <picture>
+      <source
+        media="(max-width: 640px)"
+        srcset="{base}/hero-background-mobile.avif"
+        width="640"
+        height="360"
+      />
+      <source
+        media="(max-width: 1024px)"
+        srcset="{base}/hero-background-tablet.avif"
+        width="1024"
+        height="576"
+      />
+      <img
+        src="{base}/hero-background.avif"
+        alt=""
+        width="1920"
+        height="1080"
+        class="w-full h-full object-cover"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </picture>
     <!-- Overlay to ensure text readability -->
     <div class="absolute inset-0 bg-gray-900/50"></div>
   </div>
