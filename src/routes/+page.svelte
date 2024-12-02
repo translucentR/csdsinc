@@ -1,20 +1,12 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import Hero from "$lib/components/Hero.svelte";
-  // import AboutSection from "$lib/components/AboutSection.svelte";
-  // import ServicesSection from "$lib/components/ServicesSection.svelte";
-  // import WhyChooseUs from "$lib/components/WhyChooseUs.svelte";
-  // import TestimonialsSection from "$lib/components/TestimonialsSection.svelte";
-  // import CtaSection from "$lib/components/CtaSection.svelte";
-  // import Footer from "$lib/components/Footer.svelte";
-  const AboutSection = import("$lib/components/AboutSection.svelte");
-  const ServicesSection = import("$lib/components/ServicesSection.svelte");
-  const WhyChooseUs = import("$lib/components/WhyChooseUs.svelte");
-  const TestimonialsSection = import(
-    "$lib/components/TestimonialsSection.svelte"
-  );
-  const CtaSection = import("$lib/components/CtaSection.svelte");
-  const Footer = import("$lib/components/Footer.svelte");
+  import AboutSection from "$lib/components/AboutSection.svelte";
+  import ServicesSection from "$lib/components/ServicesSection.svelte";
+  import WhyChooseUs from "$lib/components/WhyChooseUs.svelte";
+  import TestimonialsSection from "$lib/components/TestimonialsSection.svelte";
+  import CtaSection from "$lib/components/CtaSection.svelte";
+  import Footer from "$lib/components/Footer.svelte";
 
   import type {
     CTAButton,
@@ -165,33 +157,9 @@
 </script>
 
 <Hero {primaryCTA} {secondaryCTA} />
-
-{#await AboutSection then module}
-  <svelte:component this={module.default} {...aboutContent} />
-{/await}
-
-{#await ServicesSection then module}
-  <svelte:component this={module.default} {services} />
-{/await}
-
-{#await WhyChooseUs then module}
-  <svelte:component this={module.default} {benefits} />
-{/await}
-
-{#await TestimonialsSection then module}
-  <svelte:component this={module.default} {testimonials} />
-{/await}
-
-{#await CtaSection then module}
-  <svelte:component this={module.default} {...ctaContent} />
-{/await}
-
-{#await Footer then module}
-  <svelte:component
-    this={module.default}
-    columns={footerColumns}
-    socials={socialLinks}
-  />
-{/await}
-
-<!-- We'll add more sections here -->
+<AboutSection {...aboutContent} />
+<ServicesSection {services} />
+<WhyChooseUs {benefits} />
+<TestimonialsSection {testimonials} />
+<CtaSection {...ctaContent} />
+<Footer columns={footerColumns} socials={socialLinks} />
