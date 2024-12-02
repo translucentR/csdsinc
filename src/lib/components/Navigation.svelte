@@ -29,8 +29,8 @@
 <nav
   bind:this={navbar}
   class="fixed w-full z-50 transition-all duration-300 {scrolled
-    ? 'bg-white shadow-md py-2'
-    : 'bg-white/90 backdrop-blur-sm py-4'}"
+    ? 'bg-white/90 backdrop-blur-sm shadow-md py-2'
+    : 'bg-white py-4'}"
 >
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
@@ -44,11 +44,11 @@
             alt="CSDS"
           />
         </div>
-        <div class="hidden sm:ml-12 sm:flex sm:space-x-8">
+        <div class="hidden md:ml-12 md:flex md:space-x-8">
           {#each items as item}
             <a
               href={`${base}${item.href}`}
-              class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors duration-300 {$page
+              class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors duration-300 whitespace-nowrap {$page
                 .url.pathname === item.href
                 ? 'border-b-2 border-primary text-gray-900'
                 : 'text-gray-600 hover:border-b-2 hover:border-primary hover:text-gray-900'}"
@@ -59,17 +59,16 @@
 
           <a
             href="{base}/support"
-            class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300 whitespace-nowrap"
           >
             Get Help
           </a>
         </div>
       </div>
 
-      <!-- Mobile menu button -->
       <button
         onclick={() => (isMenuOpen = !isMenuOpen)}
-        class="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-900 focus:outline-none"
+        class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-900 focus:outline-none"
       >
         <span class="sr-only">Open main menu</span>
         <svg
@@ -103,7 +102,7 @@
 {#if isMenuOpen}
   <button
     type="button"
-    class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 sm:hidden"
+    class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
     onclick={() => (isMenuOpen = false)}
     onkeydown={(e) => e.key === "Escape" && (isMenuOpen = false)}
     aria-label="Close menu overlay"
@@ -139,7 +138,7 @@
         stroke-linecap="round"
         stroke-linejoin="round"
         stroke-width="2"
-        d="M9 5l7 7-7 7"
+        d="M6 18L18 6M6 6l12 12"
       />
     </svg>
   </button>
@@ -156,6 +155,15 @@
         {item.title}
       </a>
     {/each}
+
+    <div class="mt-6 pt-6 border-t border-gray-200">
+      <a
+        href="{base}/support"
+        class="block w-full px-4 py-2 text-center text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300"
+      >
+        Get Help
+      </a>
+    </div>
   </div>
 </div>
 
