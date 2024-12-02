@@ -42,6 +42,8 @@
               : ''}"
             src="{base}/logo-r-min.avif"
             alt="CSDS"
+            width="56"
+            height="56"
           />
         </div>
 
@@ -50,7 +52,7 @@
             <a
               href={`${base}${item.href}`}
               class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors duration-300 whitespace-nowrap {$page
-                .url.pathname === item.href
+                .url.pathname === `${base}${item.href}`
                 ? 'border-b-2 border-primary text-gray-900'
                 : 'text-gray-600 hover:border-b-2 hover:border-primary hover:text-gray-900'}"
             >
