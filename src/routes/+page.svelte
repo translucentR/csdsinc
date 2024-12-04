@@ -162,4 +162,3 @@
 <WhyChooseUs {benefits} />
 <TestimonialsSection {testimonials} />
 <CtaSection {...ctaContent} />
-<Footer columns={footerColumns} socials={socialLinks} />
