@@ -1,22 +1,10 @@
-# sv
+# CSDS Inc Website
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Corporate website for CSDS Inc, built with SvelteKit.
 
-## Creating a project
+## Development
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've cloned the project and installed dependencies with `npm install`, start a development server:
 
 ```bash
 npm run dev
@@ -35,4 +23,51 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Production Deployment
+
+This application uses PM2 for production process management. On the production server:
+
+1. Create `ecosystem.config.cjs` in the project root:
+```javascript
+module.exports = {
+  apps: [{
+    name: 'csdsinc',
+    script: 'npm',
+    args: 'run preview -- --host --port 3000',
+    interpreter: 'none',
+    env: {
+      NODE_ENV: 'production',
+      BASE_PATH: ''
+    },
+    watch: false,
+    max_memory_restart: '1G',
+    exp_backoff_restart_delay: 100
+  }]
+}
+```
+
+2. Deploy and run:
+```bash
+# Install dependencies
+npm install
+
+# Build the application
+npm run build
+
+# Start with PM2
+pm2 start ecosystem.config.cjs
+
+# Save PM2 configuration
+pm2 save
+pm2 startup
+```
+
+3. PM2 Management Commands:
+```bash
+pm2 status        # Check app status
+pm2 logs csdsinc  # View logs
+pm2 restart csdsinc # Restart app
+pm2 stop csdsinc   # Stop app
+```
+
+Note: `ecosystem.config.cjs` contains server-specific configuration and should not be committed to the repository.
