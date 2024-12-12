@@ -1,6 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { z } from 'zod';
+import { PRIVATE_KEAP_API_KEY } from '$env/static/private';
 
 const supportSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
