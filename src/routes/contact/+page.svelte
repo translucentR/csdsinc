@@ -254,6 +254,14 @@
             </div>
 
             <div class="mt-6">
+              <div
+                class="cf-turnstile"
+                data-sitekey="0x4AAAAAAA3B4vFfgbJRbHMw"
+                data-theme="light"
+              ></div>
+            </div>
+
+            <div class="mt-6">
               {#if form?.errors}
                 <ul class="mb-4 p-4 bg-red-50 rounded-lg text-sm text-red-600">
                   {#each Object.values(form.errors) as error}

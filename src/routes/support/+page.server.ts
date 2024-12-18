@@ -2,6 +2,8 @@ import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { z } from 'zod';
 import { sendSupportNotification } from '$lib/server/email';
+import { PRIVATE_TURNSTILE_SECRET_KEY } from '$env/static/private';
+
 const supportSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
@@ -12,8 +14,23 @@ const supportSchema = z.object({
     mobile: z.string().optional(),
     priority: z.enum(['normal', 'high', 'urgent']).default('normal'),
     subject: z.string().optional(),
-    message: z.string().min(1, 'Message is required')
+    message: z.string().min(1, 'Message is required'),
+    cfTurnstileResponse: z.string().min(1, 'Please complete the CAPTCHA')
 });
+
+async function validateTurnstileToken(token: string) {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            secret: PRIVATE_TURNSTILE_SECRET_KEY,
+            response: token
+        })
+    });
+
+    const data = await response.json();
+    return data.success;
+}
 
 export const actions = {
     default: async ({ request }) => {
@@ -21,8 +38,17 @@ export const actions = {
         console.log('Server received:', formData);
 
         try {
-            // Validation stage
             const validatedData = supportSchema.parse(formData);
+
+            // Verify Turnstile token
+            const isValid = await validateTurnstileToken(validatedData.cfTurnstileResponse);
+            if (!isValid) {
+                return fail(400, {
+                    status: 'error',
+                    message: 'CAPTCHA verification failed',
+                    values: formData
+                });
+            }
 
             // Submission stage - only reaches here if validation passes
             const emailSent = await sendSupportNotification(validatedData);

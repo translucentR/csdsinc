@@ -3,6 +3,7 @@
   import { enhance } from "$app/forms";
   import type { FormStatus } from "$lib/types/forms";
   import type { ActionData } from "./$types";
+  import { onMount } from "svelte";
 
   const supportOptions = [
     {
@@ -37,6 +38,13 @@
   $: showErrorMessage = form?.status === "error" && form?.message;
   $: showSuccessMessage = form?.status === "success";
   $: formValues = form?.values ?? {};
+
+  onMount(() => {
+    // Reload Turnstile widget
+    if (typeof window !== "undefined" && window.turnstile) {
+      window.turnstile.render(".cf-turnstile");
+    }
+  });
 </script>
 
 <div class="bg-gray-50 py-16 sm:py-24">
@@ -337,6 +345,14 @@
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               ></textarea>
             </div>
+          </div>
+
+          <div class="mt-6">
+            <div
+              class="cf-turnstile"
+              data-sitekey="0x4AAAAAAA3B4vFfgbJRbHMw"
+              data-theme="light"
+            ></div>
           </div>
 
           <!-- Error messages -->

@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { z } from 'zod';
-import { PRIVATE_KEAP_API_KEY } from '$env/static/private';
+import { PRIVATE_KEAP_API_KEY, PRIVATE_TURNSTILE_SECRET_KEY } from '$env/static/private';
 
 const contactSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -9,17 +9,40 @@ const contactSchema = z.object({
     company: z.string().optional(),
     email: z.string().email('Invalid email address'),
     phone: z.string().optional(),
-    message: z.string().min(1, 'Message is required')
+    message: z.string().min(1, 'Message is required'),
+    cfTurnstileResponse: z.string().min(1, 'Please complete the CAPTCHA')
 });
+
+async function validateTurnstileToken(token: string) {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            secret: PRIVATE_TURNSTILE_SECRET_KEY,
+            response: token
+        })
+    });
+
+    const data = await response.json();
+    return data.success;
+}
 
 export const actions = {
     default: async ({ request }) => {
         const formData = Object.fromEntries(await request.formData());
-        console.log('Server received:', formData);
 
         try {
-            // Validation stage
             const validatedData = contactSchema.parse(formData);
+
+            // Verify Turnstile token
+            const isValid = await validateTurnstileToken(validatedData.cfTurnstileResponse);
+            if (!isValid) {
+                return fail(400, {
+                    status: 'error',
+                    message: 'CAPTCHA verification failed',
+                    values: formData
+                });
+            }
 
             // TODO: Create Keap contact
             // const keapResponse = await createKeapContact(validatedData);

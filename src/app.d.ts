@@ -10,4 +10,12 @@ declare global {
 	}
 }
 
-export {};
+declare global {
+	interface Window {
+		turnstile: {
+			render: (selector: string) => void;
+		};
+	}
+}
+
+export { };
