@@ -17,7 +17,7 @@ export interface ContactFormErrors {
     form?: string;
 }
 
-export type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+export type FormStatus = 'idle' | 'validating' | 'submitting' | 'success' | 'error';
 
 export interface ContactFormActionData {
     errors?: ContactFormErrors;
@@ -49,11 +49,12 @@ export interface SupportFormErrors {
     priority?: "normal" | "high" | "urgent";
     subject?: string;
     message?: string;
-    form?: string;
 }
 
 export interface SupportFormActionData {
     errors?: SupportFormErrors;
     values?: Partial<SupportFormData>;
     success?: boolean;
+    message?: string;
+    status: FormStatus;
 }

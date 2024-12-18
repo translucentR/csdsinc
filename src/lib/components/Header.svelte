@@ -5,7 +5,6 @@
     { name: "About", href: "about" },
     { name: "Services", href: "services" },
     { name: "Support", href: "support" },
-    { name: "Blog", href: "blog" },
     { name: "Contact", href: "contact" },
   ];
 </script>

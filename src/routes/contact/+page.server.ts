@@ -1,6 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { z } from 'zod';
+import { PRIVATE_KEAP_API_KEY } from '$env/static/private';
 
 const contactSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -14,11 +15,19 @@ const contactSchema = z.object({
 export const actions = {
     default: async ({ request }) => {
         const formData = Object.fromEntries(await request.formData());
+        console.log('Server received:', formData);
 
         try {
+            // Validation stage
             const validatedData = contactSchema.parse(formData);
-            return { success: true };
-        } catch (err: unknown) {
+
+            // TODO: Create Keap contact
+            // const keapResponse = await createKeapContact(validatedData);
+
+            return {
+                status: 'success'
+            };
+        } catch (err) {
             if (err instanceof z.ZodError) {
                 const errors = err.errors.reduce((acc: Record<string, string>, curr) => {
                     const path = typeof curr.path[0] === 'string' ? curr.path[0] : '';
@@ -27,11 +36,16 @@ export const actions = {
                 }, {});
 
                 return fail(400, {
+                    status: 'error',
                     errors,
                     values: formData
                 });
             }
-            return fail(500, { message: 'An unexpected error occurred' });
+            return fail(500, {
+                status: 'error',
+                message: 'An unexpected error occurred',
+                values: formData
+            });
         }
     }
 } satisfies Actions;

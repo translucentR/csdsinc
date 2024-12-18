@@ -1,12 +1,22 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { enhance } from "$app/forms";
-  import type { ContactFormActionData } from "$lib/types/forms";
+  import type { FormStatus } from "$lib/types/forms";
+  import type { ActionData } from "./$types";
 
-  export let form: ContactFormActionData = { errors: {}, values: {} };
+  export let form: ActionData = { status: "idle" };
+  let status: FormStatus = "idle";
 
-  let isSubmitting = false;
-  let submitted = false;
+  $: showForm =
+    status === "idle" ||
+    status === "validating" ||
+    (form?.status === "error" && form?.errors);
+
+  $: isSubmitting = status === "submitting";
+
+  $: showErrorMessage = form?.status === "error" && form?.message;
+  $: showSuccessMessage = form?.status === "success";
+  $: formValues = form?.values ?? {};
 
   const phoneTypes = [
     { value: "work", label: "Work" },
@@ -106,190 +116,241 @@
         > page.
       </p>
 
-      {#if !submitted}
-        <form
-          method="POST"
-          novalidate
-          class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-100"
-          use:enhance={() => {
-            isSubmitting = true;
-            return async ({ result }) => {
-              isSubmitting = false;
-              if (result.type === "success") {
-                submitted = true;
-              } else if (result.type === "failure") {
-                form = (result.data as ContactFormActionData) || {};
-              }
-            };
-          }}
-        >
-          <div class="grid grid-cols-1 gap-6">
-            <h1 class="text-2xl font-bold text-gray-900 mb-4 text-center">
-              Get in Touch with CSDS
-            </h1>
-            <!-- First Name -->
-            <div>
-              <label
-                for="firstName"
-                class="block text-sm font-medium text-gray-700"
-                >First Name *</label
-              >
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                class:error={form?.errors?.firstName}
-                value={form?.values?.firstName ?? ""}
-              />
-            </div>
-            <!-- Last Name -->
-            <div>
-              <label
-                for="lastName"
-                class="block text-sm font-medium text-gray-700"
-                >Last Name *</label
-              >
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                class:error={form?.errors?.lastName}
-                value={form?.values?.lastName ?? ""}
-              />
-            </div>
-            <!-- Company -->
-            <div>
-              <label
-                for="company"
-                class="block text-sm font-medium text-gray-700">Company</label
-              >
-              <input
-                type="text"
-                id="company"
-                name="company"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                value={form?.values?.company ?? ""}
-              />
-            </div>
-            <!-- Email -->
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700"
-                >Email *</label
-              >
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                class:error={form?.errors?.email}
-                value={form?.values?.email ?? ""}
-              />
-            </div>
-            <!-- Phone -->
-            <div class="">
-              <label for="phone" class="block text-sm font-medium text-gray-700"
-                >Phone</label
-              >
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                class:error={form?.errors?.phone}
-                value={form?.values?.phone ?? ""}
-              />
-            </div>
-            <!-- Message -->
-            <div class="">
-              <label
-                for="message"
-                class="block text-sm font-medium text-gray-700">Message *</label
-              >
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows="4"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                class:error={form?.errors?.message}
-                >{form?.values?.message ?? ""}</textarea
-              >
-            </div>
-          </div>
+      <!-- Form/Message Section -->
+      <div class="mx-auto max-w-2xl">
+        {#if showForm}
+          <form
+            method="POST"
+            novalidate
+            class="bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+            use:enhance={({ formData }) => {
+              const values = Object.fromEntries(formData);
+              console.log("Client-side form values:", values);
 
-          <div class="mt-6">
-            {#if form?.errors}
-              <ul class="mb-4 text-sm text-red-600">
-                {#each Object.values(form.errors) as error}
-                  {#if error}
-                    <li>{error}</li>
-                  {/if}
-                {/each}
-              </ul>
-            {/if}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              class="w-full inline-flex justify-center py-3 px-4 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-[#0066cc] to-[#0052a3] hover:from-[#0052a3] hover:to-[#004080] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0066cc] disabled:opacity-50 transition-all duration-200"
-            >
-              {#if isSubmitting}
-                <svg
-                  class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+              status = "validating";
+
+              return async ({ result, update }) => {
+                if (result.type === "failure") {
+                  if (result.data && "errors" in result.data) {
+                    await update();
+                    status = "error";
+                    form = {
+                      status: "error",
+                      errors: result.data.errors,
+                      values: result.data.values || values, // Fallback to original values
+                    } as ActionData;
+                  } else {
+                    await update();
+                    status = "error";
+                    form = {
+                      status: "error",
+                      message: result?.data?.message,
+                      values: result?.data?.values || values, // Fallback to original values
+                    } as ActionData;
+                  }
+                } else if (result.type === "success") {
+                  status = "submitting";
+                  await update();
+                  form = { ...result.data, status: "submitting" } as ActionData;
+                }
+              };
+            }}
+          >
+            <div class="grid grid-cols-1 gap-6">
+              <h1 class="text-2xl font-bold text-gray-900 mb-4 text-center">
+                Get in Touch with CSDS
+              </h1>
+              <!-- First Name -->
+              <div>
+                <label
+                  for="firstName"
+                  class="block text-sm font-medium text-gray-700"
+                  >First Name *</label
                 >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Sending...
-              {:else}
-                Send Message
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
+                  bind:value={formValues.firstName}
+                />
+              </div>
+              <!-- Last Name -->
+              <div>
+                <label
+                  for="lastName"
+                  class="block text-sm font-medium text-gray-700"
+                  >Last Name *</label
+                >
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
+                  bind:value={formValues.lastName}
+                />
+              </div>
+              <!-- Company -->
+              <div>
+                <label
+                  for="company"
+                  class="block text-sm font-medium text-gray-700">Company</label
+                >
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
+                  bind:value={formValues.company}
+                />
+              </div>
+              <!-- Email -->
+              <div>
+                <label
+                  for="email"
+                  class="block text-sm font-medium text-gray-700">Email *</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
+                  bind:value={formValues.email}
+                />
+              </div>
+              <!-- Phone -->
+              <div class="">
+                <label
+                  for="phone"
+                  class="block text-sm font-medium text-gray-700">Phone</label
+                >
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
+                  bind:value={formValues.phone}
+                />
+              </div>
+              <!-- Message -->
+              <div class="">
+                <label
+                  for="message"
+                  class="block text-sm font-medium text-gray-700"
+                  >Message *</label
+                >
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  required
+                  bind:value={formValues.message}
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              {#if form?.errors}
+                <ul class="mb-4 p-4 bg-red-50 rounded-lg text-sm text-red-600">
+                  {#each Object.values(form.errors) as error}
+                    {#if error}
+                      <li class="mb-1 last:mb-0">{error}</li>
+                    {/if}
+                  {/each}
+                </ul>
               {/if}
-            </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                class="w-full inline-flex justify-center py-3 px-4 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-[#0066cc] to-[#0052a3] hover:from-[#0052a3] hover:to-[#004080] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0066cc] disabled:opacity-50 transition-all duration-300"
+              >
+                {#if isSubmitting}
+                  <svg
+                    class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Sending...
+                {:else}
+                  Send Message
+                {/if}
+              </button>
+            </div>
+          </form>
+        {:else if showErrorMessage}
+          <!-- Error Message -->
+          <div
+            class="text-center bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+          >
+            <div class="rounded-full bg-red-100 p-4 mx-auto w-fit mb-4">
+              <svg
+                class="h-8 w-8 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">
+              Submission Failed
+            </h2>
+            <p class="text-gray-600">
+              {form?.message}. Please try again or contact us directly.
+            </p>
           </div>
-        </form>
-      {:else}
-        <div
-          class="max-w-2xl mx-auto text-center bg-white p-8 rounded-xl shadow-lg border border-gray-100"
-        >
-          <div class="rounded-full bg-green-100 p-4 mx-auto w-fit mb-4">
-            <svg
-              class="h-8 w-8 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+        {:else if showSuccessMessage}
+          <!-- Success Message -->
+          <div
+            class="text-center bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+          >
+            <div class="rounded-full bg-green-100 p-4 mx-auto w-fit mb-4">
+              <svg
+                class="h-8 w-8 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Thank You!</h2>
+            <p class="text-gray-600">
+              Your message has been sent successfully. We'll get back to you
+              soon.
+            </p>
           </div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Thank You!</h2>
-          <p class="text-gray-600">
-            Your message has been sent successfully. We'll get back to you soon.
-          </p>
-        </div>
-      {/if}
+        {/if}
+      </div>
     </div>
   </div>
 </div>

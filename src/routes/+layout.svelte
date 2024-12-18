@@ -13,7 +13,6 @@
       links: [
         { title: "About", href: "/about" },
         { title: "Services", href: "/services" },
-        { title: "Blog", href: "/blog" },
         { title: "Contact", href: "/contact" },
       ],
     },

@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import { base } from "$app/paths";
   import type { NavItem } from "$lib/types/navigation";
+  import { goto } from "$app/navigation";
   import { onMount } from "svelte";
 
   let { items } = $props<{
@@ -24,6 +25,15 @@
       window.removeEventListener("scroll", handleScroll);
     };
   });
+
+  function handleClick(e: MouseEvent) {
+    const href = (e.target as HTMLAnchorElement)?.getAttribute("href");
+    if ($page.url.pathname === href) {
+      e.preventDefault();
+      goto(href, { replaceState: true });
+      location.reload();
+    }
+  }
 </script>
 
 <nav
@@ -51,6 +61,7 @@
           {#each items as item}
             <a
               href={`${base}${item.href}`}
+              onclick={handleClick}
               class="inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors duration-300 whitespace-nowrap {$page
                 .url.pathname === `${base}${item.href}`
                 ? 'border-b-2 border-primary text-gray-900'
@@ -62,7 +73,8 @@
 
           <a
             href="{base}/support"
-            class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300 whitespace-nowrap"
+            onclick={handleClick}
+            class="block w-full px-4 py-2 text-center text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300"
           >
             Get Help
           </a>
@@ -173,6 +185,7 @@
     {#each items as item}
       <a
         href={`${base}${item.href}`}
+        onclick={handleClick}
         class="block py-2 text-base font-medium {$page.url.pathname ===
         item.href
           ? 'text-primary border-l-4 border-primary pl-3'
@@ -185,6 +198,7 @@
     <div class="mt-6 pt-6 border-t border-gray-200">
       <a
         href="{base}/support"
+        onclick={handleClick}
         class="block w-full px-4 py-2 text-center text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300"
       >
         Get Help

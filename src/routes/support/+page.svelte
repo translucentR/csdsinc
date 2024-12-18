@@ -1,7 +1,8 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import { enhance } from "$app/forms";
-  import type { SupportFormActionData } from "$lib/types/forms";
+  import type { FormStatus } from "$lib/types/forms";
+  import type { ActionData } from "./$types";
 
   const supportOptions = [
     {
@@ -23,42 +24,47 @@
       },
     },
   ];
-  export let form: SupportFormActionData = { errors: {}, values: {} };
+  export let form: ActionData = { status: "idle" };
+  let status: FormStatus = "idle";
 
-  let isSubmitting = false;
-  let submitted = false;
+  $: showForm =
+    status === "idle" ||
+    status === "validating" ||
+    (form?.status === "error" && form?.errors);
+
+  $: isSubmitting = status === "submitting";
+
+  $: showErrorMessage = form?.status === "error" && form?.message;
+  $: showSuccessMessage = form?.status === "success";
+  $: formValues = form?.values ?? {};
 </script>
 
-<div class="bg-gray-50">
-  <!-- Hero Section -->
-  <div class="relative py-16 sm:py-24">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl text-center">
-        <h1
-          class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-[#0066cc] to-[#0052a3]"
-        >
-          Support Center
-        </h1>
-        <p class="mt-6 text-lg leading-8 text-gray-600">
-          Get the IT support you need, when you need it. Choose from our various
-          support options below.
-        </p>
-        <p class="mt-4 text-base text-gray-600 italic">
-          Please use the following contact information for technical support
-          requests only. For all other inquiries please use the information and
-          form on the <a
-            href="{base}/contact"
-            class="text-[#0066cc] hover:text-[#0052a3] underline">Contact Us</a
-          >
-          page.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Support Options Grid -->
+<div class="bg-gray-50 py-16 sm:py-24">
   <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="grid gap-8 md:grid-cols-2 lg:w-2/3 mx-auto">
+    <!-- Hero Section -->
+    <div class="mx-auto max-w-2xl text-center mb-16">
+      <h1
+        class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-[#0066cc] to-[#0052a3]"
+      >
+        Support Center
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600">
+        Get the IT support you need, when you need it. Choose from our various
+        support options below.
+      </p>
+      <p class="mt-4 text-base text-gray-600 italic">
+        Please use the following contact information for technical support
+        requests only. For all other inquiries please use the information and
+        form on the <a
+          href="{base}/contact"
+          class="text-[#0066cc] hover:text-[#0052a3] underline">Contact Us</a
+        >
+        page.
+      </p>
+    </div>
+
+    <!-- Support Options Grid -->
+    <div class="grid gap-8 md:grid-cols-2 lg:w-2/3 mx-auto mb-16">
       {#each supportOptions as option}
         <div
           class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"
@@ -95,33 +101,87 @@
       {/each}
     </div>
 
-    <!-- Support Form Section -->
-    <div class="mt-24 mb-24 max-w-2xl mx-auto">
-      {#if !submitted}
+    <!-- Form/Message Section -->
+    <div class="mx-auto lg:w-2/3">
+      {#if showForm}
         <form
           method="POST"
           novalidate
-          class="bg-white p-8 rounded-xl shadow-lg border border-gray-100"
-          use:enhance={() => {
-            isSubmitting = true;
-            return async ({ result }) => {
-              isSubmitting = false;
-              if (result.type === "success") {
-                submitted = true;
-              } else if (result.type === "failure") {
-                form = (result.data as SupportFormActionData) || {};
+          class="grid grid-cols-1 md:grid-cols-2 gap-y-6 md:gap-6 bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+          use:enhance={({ formData }) => {
+            const values = Object.fromEntries(formData);
+            console.log("Client-side form values:", values);
+
+            status = "validating";
+
+            return async ({ result, update }) => {
+              if (result.type === "failure") {
+                if (result.data && "errors" in result.data) {
+                  await update();
+                  status = "error";
+                  form = {
+                    status: "error",
+                    errors: result.data.errors,
+                    values: result.data.values || values, // Fallback to original values
+                  } as ActionData;
+                } else {
+                  await update();
+                  status = "error";
+                  form = {
+                    status: "error",
+                    message: result?.data?.message,
+                    values: result?.data?.values || values, // Fallback to original values
+                  } as ActionData;
+                }
+              } else if (result.type === "success") {
+                status = "submitting";
+                await update();
+                form = { ...result.data, status: "submitting" } as ActionData;
               }
             };
           }}
         >
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <h2 class="text-center text-3xl font-bold text-gray-900 col-span-2">
+          {#if isSubmitting}
+            <div
+              class="col-span-1 md:col-span-2 p-4 bg-blue-50 rounded-lg text-sm text-blue-600 text-center"
+            >
+              <div class="flex items-center justify-center gap-2">
+                <svg
+                  class="animate-spin h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Submitting your support request...
+              </div>
+            </div>
+          {/if}
+          <!-- Header spans full width -->
+          <div class="col-span-1 md:col-span-2 text-center mb-4">
+            <h2 class="text-3xl font-bold text-gray-900">
               Create a Support Ticket
             </h2>
-            <p class="text-center text-gray-600 col-span-2">
+            <p class="mt-4 text-gray-600">
               Need assistance? Submit a ticket and our team will respond
               promptly.
             </p>
+          </div>
+          <!-- Left Column -->
+          <div class="space-y-6 md:space-y-4">
             <!-- First Name -->
             <div>
               <label
@@ -134,26 +194,8 @@
                 id="firstName"
                 name="firstName"
                 required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                class:error={form?.errors?.firstName}
-                value={form?.values?.firstName ?? ""}
-              />
-            </div>
-            <!-- Last Name -->
-            <div>
-              <label
-                for="lastName"
-                class="block text-sm font-medium text-gray-700"
-                >Last Name *</label
-              >
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                class:error={form?.errors?.lastName}
-                value={form?.values?.lastName ?? ""}
+                bind:value={formValues.firstName}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               />
             </div>
             <!-- Company -->
@@ -166,22 +208,8 @@
                 type="text"
                 id="company"
                 name="company"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                value={form?.values?.company ?? ""}
-              />
-            </div>
-            <!-- Website -->
-            <div>
-              <label
-                for="website"
-                class="block text-sm font-medium text-gray-700">Website</label
-              >
-              <input
-                type="url"
-                id="website"
-                name="website"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                value={form?.values?.website ?? ""}
+                bind:value={formValues.company}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               />
             </div>
             <!-- Email -->
@@ -194,22 +222,8 @@
                 id="email"
                 name="email"
                 required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                class:error={form?.errors?.email}
-                value={form?.values?.email ?? ""}
-              />
-            </div>
-            <!-- Phone -->
-            <div>
-              <label for="phone" class="block text-sm font-medium text-gray-700"
-                >Phone</label
-              >
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                value={form?.values?.phone ?? ""}
+                bind:value={formValues.email}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               />
             </div>
             <!-- Mobile -->
@@ -222,8 +236,55 @@
                 type="tel"
                 id="mobile"
                 name="mobile"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                value={form?.values?.mobile ?? ""}
+                bind:value={formValues.mobile}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+              />
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="space-y-6 md:space-y-4">
+            <!-- Last Name -->
+            <div>
+              <label
+                for="lastName"
+                class="block text-sm font-medium text-gray-700"
+                >Last Name *</label
+              >
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                required
+                bind:value={formValues.lastName}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+              />
+            </div>
+            <!-- Website -->
+            <div>
+              <label
+                for="website"
+                class="block text-sm font-medium text-gray-700">Website</label
+              >
+              <input
+                type="url"
+                id="website"
+                name="website"
+                bind:value={formValues.website}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+              />
+            </div>
+            <!-- Phone -->
+            <div>
+              <label for="phone" class="block text-sm font-medium text-gray-700"
+                >Phone</label
+              >
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                bind:value={formValues.phone}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               />
             </div>
             <!-- Priority -->
@@ -235,8 +296,8 @@
               <select
                 id="priority"
                 name="priority"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-                value={form?.values?.priority ?? "normal"}
+                bind:value={formValues.priority}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               >
                 <option value="normal">Normal</option>
                 <option value="high">High</option>
@@ -245,38 +306,41 @@
             </div>
           </div>
 
-          <!-- Subject -->
-          <div class="mt-6">
-            <label for="subject" class="block text-sm font-medium text-gray-700"
-              >Subject</label
-            >
-            <input
-              type="text"
-              id="subject"
-              name="subject"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-              value={form?.values?.subject ?? ""}
-            />
+          <!-- Full Width Fields -->
+          <div class="col-span-1 md:col-span-2 space-y-6">
+            <!-- Subject -->
+            <div>
+              <label
+                for="subject"
+                class="block text-sm font-medium text-gray-700">Subject</label
+              >
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                bind:value={formValues.subject}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+              />
+            </div>
+            <!-- Message -->
+            <div>
+              <label
+                for="message"
+                class="block text-sm font-medium text-gray-700">Message *</label
+              >
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                required
+                bind:value={formValues.message}
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+              ></textarea>
+            </div>
           </div>
 
-          <!-- Message -->
-          <div class="mt-6">
-            <label for="message" class="block text-sm font-medium text-gray-700"
-              >Message *</label
-            >
-            <textarea
-              id="message"
-              name="message"
-              required
-              rows="4"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc] hover:border-[#0066cc] transition-colors duration-200"
-              class:error={form?.errors?.message}
-              >{form?.values?.message ?? ""}</textarea
-            >
-          </div>
-
-          <!-- Error Messages -->
-          <div class="mt-8">
+          <!-- Error messages -->
+          <div class="col-span-1 md:col-span-2">
             {#if form?.errors}
               <ul class="mb-6 p-4 bg-red-50 rounded-lg text-sm text-red-600">
                 {#each Object.values(form.errors) as error}
@@ -286,12 +350,14 @@
                 {/each}
               </ul>
             {/if}
+          </div>
 
-            <!-- Submit Button -->
+          <!-- Button container -->
+          <div class="col-span-1 md:col-span-2 flex justify-center">
             <button
               type="submit"
               disabled={isSubmitting}
-              class="w-full inline-flex justify-center py-3 px-4 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-[#0066cc] to-[#0052a3] hover:from-[#0052a3] hover:to-[#004080] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0066cc] disabled:opacity-50 transition-all duration-300"
+              class="w-full md:w-auto min-w-[200px] inline-flex justify-center py-3 px-4 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-[#0066cc] to-[#0052a3] hover:from-[#0052a3] hover:to-[#004080] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0066cc] disabled:opacity-50 transition-all duration-300"
             >
               {#if isSubmitting}
                 <svg
@@ -321,7 +387,34 @@
             </button>
           </div>
         </form>
-      {:else}
+      {:else if showErrorMessage}
+        <!-- Error Message -->
+        <div
+          class="text-center bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+        >
+          <div class="rounded-full bg-red-100 p-4 mx-auto w-fit mb-4">
+            <svg
+              class="h-8 w-8 text-red-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">
+            Submission Failed
+          </h2>
+          <p class="text-gray-600">
+            {form?.message}. Please try again or contact us directly.
+          </p>
+        </div>
+      {:else if showSuccessMessage}
         <!-- Success Message -->
         <div
           class="text-center bg-white p-8 rounded-xl shadow-lg border border-gray-100"
