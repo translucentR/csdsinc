@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { base } from "$app/paths";
   import { enhance } from "$app/forms";
   import type { FormStatus } from "$lib/types/forms";
@@ -24,6 +25,12 @@
     { value: "mobile", label: "Mobile" },
     { value: "other", label: "Other" },
   ];
+
+  onMount(() => {
+    if (typeof window !== "undefined" && window.turnstile) {
+      window.turnstile.render(".cf-turnstile");
+    }
+  });
 </script>
 
 <div class="bg-gradient-to-b from-gray-50 to-white">
