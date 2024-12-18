@@ -3,50 +3,12 @@ on:
   push:
     branches: "main"
 jobs:
-  build_site:
+  deploy_ec2:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: build
-        env:
-          BASE_PATH: "/${{ github.event.repository.name }}"
-        run: |
-          npm run build
-
-      - name: Upload Artifacts
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "build/"
-
-  deploy_pages:
-    needs: build_site
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-  deploy_ec2:
-    needs: build_site
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
