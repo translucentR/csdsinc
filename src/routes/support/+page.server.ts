@@ -35,8 +35,6 @@ async function validateTurnstileToken(token: string) {
 export const actions = {
     default: async ({ request }) => {
         const formData = Object.fromEntries(await request.formData());
-        console.log('Server received:', formData);
-
         try {
             const validatedData = supportSchema.parse(formData);
 
@@ -50,6 +48,9 @@ export const actions = {
                 });
             }
 
+            return {
+                status: 'success'
+            };
             // Submission stage - only reaches here if validation passes
             const emailSent = await sendSupportNotification(validatedData);
 

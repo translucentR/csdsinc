@@ -13,7 +13,15 @@ declare global {
 declare global {
 	interface Window {
 		turnstile: {
-			render: (selector: string) => void;
+			render: (element: HTMLElement, options: {
+				sitekey: string;
+				theme?: 'light' | 'dark';
+				callback?: (token: string) => void;
+				'error-callback'?: () => void;
+				'refresh-expired'?: 'auto' | 'manual' | 'never';
+			}) => string;
+			reset: (widgetId: string) => void;
+			remove: (widgetId: string) => void;
 		};
 	}
 }

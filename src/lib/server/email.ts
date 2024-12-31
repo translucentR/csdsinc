@@ -12,7 +12,6 @@ const sesClient = new SESClient({
 export async function sendSupportNotification(formData: Record<string, string>) {
     const { firstName, lastName, email, subject, message, priority } = formData;
 
-    console.log('sendSupportNotification starting, received form data:', formData);
     const emailParams = {
         Source: PRIVATE_AWS_SUPPORT_EMAIL,
         Destination: {
@@ -44,13 +43,8 @@ This is an automated notification from the CSDS Support System.
     };
 
     try {
-        console.log('Attempting to send email with params:', {
-            source: PRIVATE_AWS_SUPPORT_EMAIL,
-            region: PRIVATE_AWS_REGION,
-        });
 
-        const result = await sesClient.send(new SendEmailCommand(emailParams));
-        console.log('Email sent successfully:', result);
+        await sesClient.send(new SendEmailCommand(emailParams));
         return true;
     } catch (error) {
         console.error('Failed to send email. Full error:', error);

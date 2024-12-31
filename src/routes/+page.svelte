@@ -6,7 +6,7 @@
   import WhyChooseUs from "$lib/components/WhyChooseUs.svelte";
   import TestimonialsSection from "$lib/components/TestimonialsSection.svelte";
   import CtaSection from "$lib/components/CtaSection.svelte";
-  import Footer from "$lib/components/Footer.svelte";
+  import DownloadGuide from "$lib/components/DownloadGuide.svelte";
 
   import type {
     CTAButton,
@@ -161,3 +161,4 @@
 <WhyChooseUs {benefits} />
 <TestimonialsSection {testimonials} />
 <CtaSection {...ctaContent} />
+<DownloadGuide />

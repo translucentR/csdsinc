@@ -33,7 +33,6 @@ export const actions = {
 
         try {
             const validatedData = contactSchema.parse(formData);
-
             // Verify Turnstile token
             const isValid = await validateTurnstileToken(validatedData.cfTurnstileResponse);
             if (!isValid) {
