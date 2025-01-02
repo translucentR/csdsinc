@@ -29,7 +29,7 @@
   $: formValues = form?.values ?? {};
 </script>
 
-<div class="bg-gray-50 py-16 sm:py-24">
+<div class="bg-gray-50 py-8 sm:py-16 lg:py-24">
   <div class="mx-auto max-w-7xl px-6 lg:px-8">
     <!-- Hero Section -->
     <div class="mx-auto max-w-2xl text-center mb-16">
@@ -54,7 +54,9 @@
     </div>
 
     <!-- Support Options Grid -->
-    <div class="grid gap-8 md:grid-cols-2 lg:w-2/3 mx-auto mb-16">
+    <div
+      class="grid gap-6 md:gap-8 md:grid-cols-2 lg:w-2/3 mx-auto mb-8 md:mb-16"
+    >
       {#each supportOptions as option}
         <div
           class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"
@@ -95,7 +97,7 @@
     <div class="mx-auto lg:w-2/3">
       <CustomForm
         {form}
-        formClass="bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+        formClass="bg-white p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg border border-gray-100"
         submitText="Submit Support Request"
         successMessage="Your support request has been submitted successfully. We'll get back to you soon."
       >
@@ -108,7 +110,7 @@
         </p>
 
         <!-- Form Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <!-- First Name -->
           <div>
             <label
