@@ -72,14 +72,16 @@
     </div>
 
     <!-- Content -->
-    <div class="relative z-10 px-6 lg:px-8 text-center">
-      <div class="mx-auto max-w-3xl py-32">
+    <div class="relative z-10 px-4 lg:px-8 text-center">
+      <div class="mx-auto max-w-3xl py-16 sm:py-24 lg:py-32">
         <h1
-          class="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-4"
+          class="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-6xl mb-4"
         >
           IT that works for you
         </h1>
-        <p class="text-lg leading-7 text-gray-100 max-w-2xl mx-auto">
+        <p
+          class="text-base leading-7 text-gray-100 sm:text-lg max-w-2xl mx-auto"
+        >
           Started in 1994, Computer Systems Development Services is a complete
           technology solution provider. We are 100% committed to making sure
           business owners have the most reliable and professional IT service in
@@ -91,34 +93,35 @@
 
   <!-- Main Content -->
   <div class="bg-gray-50">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
       <div class="mx-auto max-w-3xl text-center">
         <h2
-          class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-4"
+          class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl mb-3"
         >
           Why Choose CSDS?
         </h2>
-        <p class="text-lg leading-7 text-gray-600">
+        <p class="text-base leading-7 text-gray-600 sm:text-lg">
           Our team of talented IT professionals can solve your IT issues once
           and for all. Here's why so many businesses depend on Computer Systems
           Development Services for complete IT services and support:
         </p>
       </div>
 
-      <!-- Strengths Grid -->
-      <div class="mx-auto mt-12 max-w-5xl">
-        <div class="grid grid-cols-2 gap-6">
+      <!-- Strengths Cards -->
+      <div class="mx-auto mt-8 lg:mt-12 max-w-5xl">
+        <!-- Main grid for first 4 items -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
           {#each strengths.slice(0, 4) as strength}
             <div
-              class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
+              class="bg-white p-4 lg:p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
             >
-              <div class="flex items-start space-x-4">
+              <div class="flex items-start space-x-3 lg:space-x-4">
                 <div class="flex-shrink-0">
                   <div
-                    class="flex h-12 w-12 items-center justify-center rounded-sm bg-white"
+                    class="flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-sm bg-white"
                   >
                     <svg
-                      class="h-6 w-6 text-[#0066cc]"
+                      class="h-5 w-5 lg:h-6 lg:w-6 text-[#0066cc]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
@@ -133,10 +136,12 @@
                   </div>
                 </div>
                 <div class="flex-1">
-                  <h3 class="text-lg font-bold text-gray-900 mb-2">
+                  <h3
+                    class="text-base font-bold text-gray-900 lg:text-lg mb-1 lg:mb-2"
+                  >
                     {strength.title}
                   </h3>
-                  <p class="text-gray-600 text-base leading-relaxed">
+                  <p class="text-sm text-gray-600 leading-relaxed lg:text-base">
                     {strength.description}
                   </p>
                 </div>
@@ -145,18 +150,18 @@
           {/each}
         </div>
 
-        <!-- Last item centered -->
-        <div class="mt-6 flex justify-center">
+        <!-- Last item - centered on larger screens -->
+        <div class="mt-4 lg:mt-6">
           <div
-            class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 max-w-md w-full"
+            class="bg-white p-4 lg:p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 sm:max-w-md sm:mx-auto"
           >
-            <div class="flex items-start space-x-4">
+            <div class="flex items-start space-x-3 lg:space-x-4">
               <div class="flex-shrink-0">
                 <div
-                  class="flex h-12 w-12 items-center justify-center rounded-sm bg-white"
+                  class="flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-sm bg-white"
                 >
                   <svg
-                    class="h-6 w-6 text-[#0066cc]"
+                    class="h-5 w-5 lg:h-6 lg:w-6 text-[#0066cc]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
@@ -171,10 +176,12 @@
                 </div>
               </div>
               <div class="flex-1">
-                <h3 class="text-lg font-bold text-gray-900 mb-2">
+                <h3
+                  class="text-base font-bold text-gray-900 lg:text-lg mb-1 lg:mb-2"
+                >
                   {strengths[4].title}
                 </h3>
-                <p class="text-gray-600 text-base leading-relaxed">
+                <p class="text-sm text-gray-600 leading-relaxed lg:text-base">
                   {strengths[4].description}
                 </p>
               </div>
