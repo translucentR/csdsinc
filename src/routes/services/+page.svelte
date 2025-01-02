@@ -4,14 +4,45 @@
     description: string;
     icon: string;
     features: string[];
+    isNew?: boolean;
   }
 
   const services: Service[] = [
     {
+      title: "Audio/Video Solutions",
+      description:
+        "Professional AV systems for conference rooms, digital signage, and collaboration spaces.",
+      icon: "video-camera",
+      features: [
+        "Conference Room Design",
+        "Video Conferencing Systems",
+        "Digital Signage",
+        "Sound Systems",
+        "Display Solutions",
+        "AV Network Integration",
+      ],
+      isNew: true,
+    },
+    {
+      title: "Custom Development & Integrations",
+      description:
+        "Specialized solutions tailored to your unique business requirements.",
+      icon: "code",
+      features: [
+        "Internal Application Development",
+        "Customer-Facing Websites",
+        "API Design & Implementation",
+        "Analytics & Tracking Systems",
+        "Database Management",
+        "System Integration",
+      ],
+      isNew: true,
+    },
+    {
       title: "Managed IT Services",
       description:
         "Comprehensive IT support and management for your business infrastructure.",
-      icon: "server", // We'll implement icons later
+      icon: "server",
       features: [
         "24/7 System Monitoring",
         "Help Desk Support",
@@ -49,32 +80,18 @@
         "Incident Response",
       ],
     },
-    {
-      title: "Custom Development & Integrations",
-      description:
-        "Specialized solutions tailored to your unique business requirements.",
-      icon: "code",
-      features: [
-        "Internal Application Development",
-        "Customer-Facing Websites",
-        "API Design & Implementation",
-        "Analytics & Tracking Systems",
-        "Database Management",
-        "System Integration",
-      ],
-    },
   ];
 </script>
 
 <div class="bg-gray-50">
   <!-- Hero Section -->
-  <div class="relative py-24 sm:py-32">
+  <div class="relative py-8 lg:py-16">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl text-center">
-        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+      <div class="mx-auto max-w-3xl text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900 lg:text-6xl">
           Our Services
         </h1>
-        <p class="mt-6 text-lg leading-8 text-gray-600">
+        <p class="mt-3 text-lg leading-7 text-gray-600 lg:text-xl">
           Comprehensive IT solutions tailored to your business needs. We provide
           the expertise and support you need to succeed in today's digital
           landscape.
@@ -84,42 +101,58 @@
   </div>
 
   <!-- Services Grid -->
-  <div class="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 pb-12 lg:pb-24">
+    <div class="flex flex-wrap gap-10 justify-center">
       {#each services as service}
         <div
-          class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow flex flex-col"
+          class="relative w-full md:w-[calc(50%-20px)] lg:w-[calc(33.333%-27px)]"
         >
-          <div class="min-h-[120px]">
-            <h2 class="text-xl font-bold text-gray-900 mb-3">
-              {service.title}
-            </h2>
-            <p class="text-sm text-gray-600">{service.description}</p>
-          </div>
+          {#if service.isNew}
+            <div class="absolute -top-7 left-2 z-10">
+              <div
+                class="bg-primary text-white text-sm px-4 py-1 rounded-t-md border-2 border-b-0 border-primary"
+              >
+                New Offering
+              </div>
+            </div>
+          {/if}
+          <div
+            class="bg-white rounded-xl shadow-sm p-6 lg:p-8 hover:shadow-md transition-shadow flex flex-col h-full
+                    {service.isNew
+              ? 'border-2 border-primary'
+              : 'border border-gray-100'}"
+          >
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-2 lg:mb-3">
+                {service.title}
+              </h2>
+              <p class="text-lg text-gray-600">{service.description}</p>
+            </div>
 
-          <h3 class="text-base font-semibold text-gray-900 mb-2">
-            Key Features:
-          </h3>
-          <ul class="space-y-1.5">
-            {#each service.features as feature}
-              <li class="flex items-start">
-                <svg
-                  class="h-5 w-5 text-primary flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                <span class="ml-2 text-sm text-gray-600">{feature}</span>
-              </li>
-            {/each}
-          </ul>
+            <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-4">
+              Key Features:
+            </h3>
+            <ul class="space-y-3">
+              {#each service.features as feature}
+                <li class="flex items-start space-x-3">
+                  <svg
+                    class="h-6 w-6 text-primary flex-shrink-0 mt-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span class="text-lg text-gray-600">{feature}</span>
+                </li>
+              {/each}
+            </ul>
+          </div>
         </div>
       {/each}
     </div>

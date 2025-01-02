@@ -1,9 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
-  import { enhance } from "$app/forms";
-  import type { FormStatus } from "$lib/types/forms";
-  import type { ActionData } from "./$types";
-  import { onMount } from "svelte";
+  import CustomForm from "$lib/components/CustomForm/CustomForm.svelte";
+  import type { SupportFormActionData } from "$lib/types/forms";
 
   const supportOptions = [
     {
@@ -25,26 +23,10 @@
       },
     },
   ];
-  export let form: ActionData = { status: "idle" };
-  let status: FormStatus = "idle";
 
-  $: showForm =
-    status === "idle" ||
-    status === "validating" ||
-    (form?.status === "error" && form?.errors);
+  export let form: SupportFormActionData | undefined = undefined;
 
-  $: isSubmitting = status === "submitting";
-
-  $: showErrorMessage = form?.status === "error" && form?.message;
-  $: showSuccessMessage = form?.status === "success";
   $: formValues = form?.values ?? {};
-
-  onMount(() => {
-    // Reload Turnstile widget
-    if (typeof window !== "undefined" && window.turnstile) {
-      window.turnstile.render(".cf-turnstile");
-    }
-  });
 </script>
 
 <div class="bg-gray-50 py-16 sm:py-24">
@@ -109,354 +91,169 @@
       {/each}
     </div>
 
-    <!-- Form/Message Section -->
+    <!-- Form Section -->
     <div class="mx-auto lg:w-2/3">
-      {#if showForm}
-        <form
-          method="POST"
-          novalidate
-          class="grid grid-cols-1 md:grid-cols-2 gap-y-6 md:gap-6 bg-white p-8 rounded-xl shadow-lg border border-gray-100"
-          use:enhance={({ formData }) => {
-            const values = Object.fromEntries(formData);
-            console.log("Client-side form values:", values);
+      <CustomForm
+        {form}
+        formClass="bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+        submitText="Submit Support Request"
+        successMessage="Your support request has been submitted successfully. We'll get back to you soon."
+      >
+        <!-- Header -->
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-4">
+          Create a Support Ticket
+        </h2>
+        <p class="text-gray-600 text-center mb-8">
+          Need assistance? Submit a ticket and our team will respond promptly.
+        </p>
 
-            status = "validating";
-
-            return async ({ result, update }) => {
-              if (result.type === "failure") {
-                if (result.data && "errors" in result.data) {
-                  await update();
-                  status = "error";
-                  form = {
-                    status: "error",
-                    errors: result.data.errors,
-                    values: result.data.values || values, // Fallback to original values
-                  } as ActionData;
-                } else {
-                  await update();
-                  status = "error";
-                  form = {
-                    status: "error",
-                    message: result?.data?.message,
-                    values: result?.data?.values || values, // Fallback to original values
-                  } as ActionData;
-                }
-              } else if (result.type === "success") {
-                status = "submitting";
-                await update();
-                form = { ...result.data, status: "submitting" } as ActionData;
-              }
-            };
-          }}
-        >
-          {#if isSubmitting}
-            <div
-              class="col-span-1 md:col-span-2 p-4 bg-blue-50 rounded-lg text-sm text-blue-600 text-center"
+        <!-- Form Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- First Name -->
+          <div>
+            <label
+              for="firstName"
+              class="block text-sm font-medium text-gray-700"
+              >First Name *</label
             >
-              <div class="flex items-center justify-center gap-2">
-                <svg
-                  class="animate-spin h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Submitting your support request...
-              </div>
-            </div>
-          {/if}
-          <!-- Header spans full width -->
-          <div class="col-span-1 md:col-span-2 text-center mb-4">
-            <h2 class="text-3xl font-bold text-gray-900">
-              Create a Support Ticket
-            </h2>
-            <p class="mt-4 text-gray-600">
-              Need assistance? Submit a ticket and our team will respond
-              promptly.
-            </p>
-          </div>
-          <!-- Left Column -->
-          <div class="space-y-6 md:space-y-4">
-            <!-- First Name -->
-            <div>
-              <label
-                for="firstName"
-                class="block text-sm font-medium text-gray-700"
-                >First Name *</label
-              >
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                required
-                bind:value={formValues.firstName}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              />
-            </div>
-            <!-- Company -->
-            <div>
-              <label
-                for="company"
-                class="block text-sm font-medium text-gray-700">Company</label
-              >
-              <input
-                type="text"
-                id="company"
-                name="company"
-                bind:value={formValues.company}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              />
-            </div>
-            <!-- Email -->
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700"
-                >Email *</label
-              >
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                bind:value={formValues.email}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              />
-            </div>
-            <!-- Mobile -->
-            <div>
-              <label
-                for="mobile"
-                class="block text-sm font-medium text-gray-700">Mobile</label
-              >
-              <input
-                type="tel"
-                id="mobile"
-                name="mobile"
-                bind:value={formValues.mobile}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              />
-            </div>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+            />
           </div>
 
-          <!-- Right Column -->
-          <div class="space-y-6 md:space-y-4">
-            <!-- Last Name -->
-            <div>
-              <label
-                for="lastName"
-                class="block text-sm font-medium text-gray-700"
-                >Last Name *</label
-              >
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                required
-                bind:value={formValues.lastName}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              />
-            </div>
-            <!-- Website -->
-            <div>
-              <label
-                for="website"
-                class="block text-sm font-medium text-gray-700">Website</label
-              >
-              <input
-                type="url"
-                id="website"
-                name="website"
-                bind:value={formValues.website}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              />
-            </div>
-            <!-- Phone -->
-            <div>
-              <label for="phone" class="block text-sm font-medium text-gray-700"
-                >Phone</label
-              >
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                bind:value={formValues.phone}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              />
-            </div>
-            <!-- Priority -->
-            <div>
-              <label
-                for="priority"
-                class="block text-sm font-medium text-gray-700">Priority</label
-              >
-              <select
-                id="priority"
-                name="priority"
-                bind:value={formValues.priority}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              >
-                <option value="normal">Normal</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Full Width Fields -->
-          <div class="col-span-1 md:col-span-2 space-y-6">
-            <!-- Subject -->
-            <div>
-              <label
-                for="subject"
-                class="block text-sm font-medium text-gray-700">Subject</label
-              >
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                bind:value={formValues.subject}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              />
-            </div>
-            <!-- Message -->
-            <div>
-              <label
-                for="message"
-                class="block text-sm font-medium text-gray-700">Message *</label
-              >
-              <textarea
-                id="message"
-                name="message"
-                rows="4"
-                required
-                bind:value={formValues.message}
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-              ></textarea>
-            </div>
-          </div>
-
-          <div class="mt-6">
-            <div
-              class="cf-turnstile"
-              data-sitekey="0x4AAAAAAA3B4vFfgbJRbHMw"
-              data-theme="light"
-            ></div>
-          </div>
-
-          <!-- Error messages -->
-          <div class="col-span-1 md:col-span-2">
-            {#if form?.errors}
-              <ul class="mb-6 p-4 bg-red-50 rounded-lg text-sm text-red-600">
-                {#each Object.values(form.errors) as error}
-                  {#if error}
-                    <li class="mb-1 last:mb-0">{error}</li>
-                  {/if}
-                {/each}
-              </ul>
-            {/if}
-          </div>
-
-          <!-- Button container -->
-          <div class="col-span-1 md:col-span-2 flex justify-center">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              class="w-full md:w-auto min-w-[200px] inline-flex justify-center py-3 px-4 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-[#0066cc] to-[#0052a3] hover:from-[#0052a3] hover:to-[#004080] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0066cc] disabled:opacity-50 transition-all duration-300"
+          <!-- Last Name -->
+          <div>
+            <label
+              for="lastName"
+              class="block text-sm font-medium text-gray-700">Last Name *</label
             >
-              {#if isSubmitting}
-                <svg
-                  class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Sending...
-              {:else}
-                Submit Support Request
-              {/if}
-            </button>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+            />
           </div>
-        </form>
-      {:else if showErrorMessage}
-        <!-- Error Message -->
-        <div
-          class="text-center bg-white p-8 rounded-xl shadow-lg border border-gray-100"
-        >
-          <div class="rounded-full bg-red-100 p-4 mx-auto w-fit mb-4">
-            <svg
-              class="h-8 w-8 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+
+          <!-- Company -->
+          <div>
+            <label for="company" class="block text-sm font-medium text-gray-700"
+              >Company</label
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+              autocomplete="organization"
+            />
           </div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">
-            Submission Failed
-          </h2>
-          <p class="text-gray-600">
-            {form?.message}. Please try again or contact us directly.
-          </p>
+
+          <!-- Website -->
+          <div>
+            <label for="website" class="block text-sm font-medium text-gray-700"
+              >Website</label
+            >
+            <input
+              type="url"
+              id="website"
+              name="website"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+            />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email *</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+              autocomplete="email"
+            />
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700"
+              >Phone</label
+            >
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+              autocomplete="tel"
+            />
+          </div>
+
+          <!-- Mobile -->
+          <div>
+            <label for="mobile" class="block text-sm font-medium text-gray-700"
+              >Mobile</label
+            >
+            <input
+              type="tel"
+              id="mobile"
+              name="mobile"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+            />
+          </div>
+
+          <!-- Priority -->
+          <div>
+            <label
+              for="priority"
+              class="block text-sm font-medium text-gray-700">Priority</label
+            >
+            <select
+              id="priority"
+              name="priority"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+            >
+              <option value="normal">Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+
+          <!-- Subject (Full Width) -->
+          <div class="col-span-full">
+            <label for="subject" class="block text-sm font-medium text-gray-700"
+              >Subject</label
+            >
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+            />
+          </div>
+
+          <!-- Message (Full Width) -->
+          <div class="col-span-full">
+            <label for="message" class="block text-sm font-medium text-gray-700"
+              >Message *</label
+            >
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
+            ></textarea>
+          </div>
         </div>
-      {:else if showSuccessMessage}
-        <!-- Success Message -->
-        <div
-          class="text-center bg-white p-8 rounded-xl shadow-lg border border-gray-100"
-        >
-          <div class="rounded-full bg-green-100 p-4 mx-auto w-fit mb-4">
-            <svg
-              class="h-8 w-8 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Thank You!</h2>
-          <p class="text-gray-600">
-            Your support request has been sent successfully. We'll get back to
-            you soon.
-          </p>
-        </div>
-      {/if}
+      </CustomForm>
     </div>
   </div>
 </div>

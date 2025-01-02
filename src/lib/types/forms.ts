@@ -1,60 +1,63 @@
-export interface ContactFormData {
+// Basic form status and field types
+export type FormStatus = 'idle' | 'validating' | 'submitting' | 'success' | 'error';
+
+// Base interfaces for all forms
+export interface BaseFormData {
     firstName: string;
     lastName: string;
     company?: string;
     email: string;
-    phone?: string;
     message: string;
 }
 
-export interface ContactFormErrors {
+export interface BaseFormErrors {
     firstName?: string;
     lastName?: string;
     company?: string;
     email?: string;
-    phone?: string;
     message?: string;
     form?: string;
 }
 
-export type FormStatus = 'idle' | 'validating' | 'submitting' | 'success' | 'error';
+export interface BaseFormActionData {
+    status: FormStatus;
+    message?: string;
+    errors?: BaseFormErrors;
+    values?: Partial<BaseFormData>;
+}
 
-export interface ContactFormActionData {
+// Contact form specific types
+export interface ContactFormData extends BaseFormData {
+    phone?: string;
+}
+
+export interface ContactFormErrors extends BaseFormErrors {
+    phone?: string;
+}
+
+export interface ContactFormActionData extends BaseFormActionData {
     errors?: ContactFormErrors;
     values?: Partial<ContactFormData>;
-    success?: boolean;
 }
 
-export interface SupportFormData {
-    firstName: string;
-    lastName: string;
-    company?: string;
+// Support form specific types
+export interface SupportFormData extends BaseFormData {
     website?: string;
-    email: string;
     phone?: string;
     mobile?: string;
     priority?: "normal" | "high" | "urgent";
     subject?: string;
-    message: string;
 }
 
-export interface SupportFormErrors {
-    firstName?: string;
-    lastName?: string;
-    company?: string;
+export interface SupportFormErrors extends BaseFormErrors {
     website?: string;
-    email?: string;
     phone?: string;
     mobile?: string;
-    priority?: "normal" | "high" | "urgent";
+    priority?: string;
     subject?: string;
-    message?: string;
 }
 
-export interface SupportFormActionData {
+export interface SupportFormActionData extends BaseFormActionData {
     errors?: SupportFormErrors;
     values?: Partial<SupportFormData>;
-    success?: boolean;
-    message?: string;
-    status: FormStatus;
 }
