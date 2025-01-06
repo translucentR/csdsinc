@@ -1,7 +1,8 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { z } from 'zod';
-import { PRIVATE_KEAP_API_KEY, PRIVATE_TURNSTILE_SECRET_KEY } from '$env/static/private';
+import { PRIVATE_TURNSTILE_SECRET_KEY } from '$env/static/private';
+import { createKeapContact } from '$lib/server/keap';
 
 const contactSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -43,8 +44,16 @@ export const actions = {
                 });
             }
 
-            // TODO: Create Keap contact
-            // const keapResponse = await createKeapContact(validatedData);
+            try {
+                await createKeapContact(validatedData);
+            } catch (error) {
+                console.error('Keap integration error:', error);
+                return fail(500, {
+                    status: 'error',
+                    message: 'Failed to create contact. Please try again.',
+                    values: formData
+                });
+            }
 
             return {
                 status: 'success'
