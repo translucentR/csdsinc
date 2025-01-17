@@ -18,13 +18,14 @@ const supportSchema = z.object({
     cfTurnstileResponse: z.string().min(1, 'Please complete the CAPTCHA')
 });
 
-async function validateTurnstileToken(token: string) {
+async function validateTurnstileToken(token: string, host: string) {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             secret: PRIVATE_TURNSTILE_SECRET_KEY,
-            response: token
+            response: token,
+            domain: host
         })
     });
 
@@ -34,12 +35,13 @@ async function validateTurnstileToken(token: string) {
 
 export const actions = {
     default: async ({ request }) => {
+        const host = request.headers.get('host') || 'localhost';
         const formData = Object.fromEntries(await request.formData());
         try {
             const validatedData = supportSchema.parse(formData);
 
             // Verify Turnstile token
-            const isValid = await validateTurnstileToken(validatedData.cfTurnstileResponse);
+            const isValid = await validateTurnstileToken(validatedData.cfTurnstileResponse, host);
             if (!isValid) {
                 return fail(400, {
                     status: 'error',
