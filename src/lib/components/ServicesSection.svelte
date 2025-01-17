@@ -17,55 +17,26 @@
   };
 </script>
 
-<section class="py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-8 md:py-12 lg:py-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
     <div class="text-center">
-      <h2 class="text-3xl font-bold text-secondary sm:text-4xl mb-16">
+      <h2
+        class="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary mb-8 md:mb-12 lg:mb-16"
+      >
         Our Services
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 md:gap-8">
       <!-- First row: 3 items -->
-      {#each services.slice(0, 3) as service (service.title)}
-        <div
-          class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
-        >
-          <div class="text-primary mb-4">
-            <svg
-              class="w-8 h-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d={icons[service.icon as ServiceCard["icon"]]}
-              />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-secondary mb-3">
-            {service.title}
-          </h3>
-          <p class="text-gray-600 leading-relaxed">
-            {service.description}
-          </p>
-        </div>
-      {/each}
-
-      <!-- Second row: 2 items centered -->
-      <div
-        class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-8 md:max-w-2xl md:mx-auto"
-      >
-        {#each services.slice(3, 5) as service (service.title)}
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {#each services.slice(0, 3) as service (service.title)}
           <div
-            class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
+            class="bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
           >
-            <div class="text-primary mb-4">
+            <div class="text-primary mb-3 md:mb-4">
               <svg
-                class="w-8 h-8"
+                class="w-6 h-6 md:w-8 md:h-8"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -78,7 +49,44 @@
                 />
               </svg>
             </div>
-            <h3 class="text-xl font-bold text-secondary mb-3">
+            <h3
+              class="text-lg md:text-xl font-bold text-secondary mb-2 md:mb-3"
+            >
+              {service.title}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {service.description}
+            </p>
+          </div>
+        {/each}
+      </div>
+
+      <!-- Second row: 2 items centered -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 md:max-w-2xl md:mx-auto"
+      >
+        {#each services.slice(3, 5) as service (service.title)}
+          <div
+            class="bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
+          >
+            <div class="text-primary mb-3 md:mb-4">
+              <svg
+                class="w-6 h-6 md:w-8 md:h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d={icons[service.icon as ServiceCard["icon"]]}
+                />
+              </svg>
+            </div>
+            <h3
+              class="text-lg md:text-xl font-bold text-secondary mb-2 md:mb-3"
+            >
               {service.title}
             </h3>
             <p class="text-gray-600 leading-relaxed">
@@ -89,14 +97,14 @@
       </div>
     </div>
 
-    <div class="text-center mt-12">
+    <div class="text-center mt-8 md:mt-12">
       <a
         href={`${base}/services`}
-        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300"
+        class="inline-flex items-center px-4 py-2 md:px-6 md:py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary-dark transition-colors duration-300"
       >
         Explore All Services
         <svg
-          class="ml-2 -mr-1 w-5 h-5"
+          class="ml-2 -mr-1 w-4 h-4 md:w-5 md:h-5"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

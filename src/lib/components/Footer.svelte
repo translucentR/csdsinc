@@ -17,12 +17,12 @@
 </script>
 
 <footer class="bg-secondary-light text-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
       <!-- Contact Information -->
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Contact</h3>
-        <div class="space-y-3 text-gray-300">
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-semibold mb-3 md:mb-4">Contact</h3>
+        <div class="space-y-2 md:space-y-3 text-gray-300">
           <p class="font-medium">Computer Systems Development Services</p>
           <div class="space-y-1">
             <p>
@@ -45,8 +45,8 @@
 
       <!-- Quick Links -->
       {#each columns as column}
-        <div>
-          <h3 class="text-lg font-semibold mb-4">{column.title}</h3>
+        <div class="text-center md:text-left">
+          <h3 class="text-lg font-semibold mb-3 md:mb-4">{column.title}</h3>
           <ul class="space-y-2">
             {#each column.links as link}
               <li>
@@ -63,9 +63,9 @@
       {/each}
 
       <!-- Social Links -->
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
-        <div class="flex space-x-4">
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-semibold mb-3 md:mb-4">Connect With Us</h3>
+        <div class="flex justify-center md:justify-start space-x-4">
           {#each socials as social}
             <a
               href={social.href}
@@ -84,11 +84,11 @@
     </div>
 
     <!-- Bottom Bar -->
-    <div class="mt-4 pt-8">
+    <div class="mt-8 pt-6 md:pt-8 border-t border-gray-700">
       <div
         class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
       >
-        <p class="text-gray-300 text-sm">
+        <p class="text-gray-300 text-sm text-center md:text-left">
           © {new Date().getFullYear()} Computer Systems Development Services. All
           rights reserved.
         </p>

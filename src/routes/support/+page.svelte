@@ -29,39 +29,40 @@
   $: formValues = form?.values ?? {};
 </script>
 
-<div class="bg-gray-50 py-16 sm:py-24">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+<div class="bg-gray-50 py-8 md:py-12 lg:py-16">
+  <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
     <!-- Hero Section -->
-    <div class="mx-auto max-w-2xl text-center mb-16">
+    <div class="mx-auto max-w-2xl text-center mb-8 md:mb-12">
       <h1
-        class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-[#0066cc] to-[#0052a3]"
+        class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-[#0066cc] to-[#0052a3]"
       >
         Support Center
       </h1>
-      <p class="mt-6 text-lg leading-8 text-gray-600">
+      <p class="mt-4 text-base md:text-lg text-gray-600">
         Get the IT support you need, when you need it. Choose from our various
         support options below.
       </p>
-      <p class="mt-4 text-base text-gray-600 italic">
+      <p class="mt-3 text-sm md:text-base text-gray-600 italic">
         Please use the following contact information for technical support
         requests only. For all other inquiries please use the information and
         form on the <a
           href="{base}/contact"
           class="text-[#0066cc] hover:text-[#0052a3] underline">Contact Us</a
-        >
-        page.
+        > page.
       </p>
     </div>
 
     <!-- Support Options Grid -->
-    <div class="grid gap-8 md:grid-cols-2 lg:w-2/3 mx-auto mb-16">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:w-2/3 mx-auto mb-8 md:mb-12"
+    >
       {#each supportOptions as option}
         <div
-          class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+          class="bg-white p-6 md:p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
         >
-          <div class="text-[#0066cc] mb-6">
+          <div class="text-[#0066cc] mb-4 md:mb-6">
             <svg
-              class="w-10 h-10"
+              class="w-8 h-8 md:w-10 md:h-10"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -74,16 +75,16 @@
               />
             </svg>
           </div>
-          <h3 class="text-2xl font-bold text-gray-900 mb-4">
+          <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
             {option.title}
           </h3>
-          <p class="text-gray-600 leading-relaxed mb-8">
+          <p class="text-gray-600 leading-relaxed mb-6 md:mb-8">
             {option.description}
           </p>
           <a
             href={option.action.href}
             target="_blank"
-            class="inline-flex items-center px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-[#0066cc] to-[#0052a3] hover:from-[#0052a3] hover:to-[#004080] shadow-lg hover:shadow-xl transition-all duration-300"
+            class="inline-flex items-center px-4 py-2 md:px-5 md:py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-[#0066cc] to-[#0052a3] hover:from-[#0052a3] hover:to-[#004080] shadow-sm hover:shadow-md transition-all duration-300"
           >
             {option.action.text}
           </a>
@@ -95,20 +96,22 @@
     <div class="mx-auto lg:w-2/3">
       <CustomForm
         {form}
-        formClass="bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+        formClass="bg-white p-4 md:p-6 lg:p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
         submitText="Submit Support Request"
         successMessage="Your support request has been submitted successfully. We'll get back to you soon."
       >
         <!-- Header -->
-        <h2 class="text-3xl font-bold text-gray-900 text-center mb-4">
+        <h2
+          class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3 md:mb-4"
+        >
           Create a Support Ticket
         </h2>
-        <p class="text-gray-600 text-center mb-8">
+        <p class="text-gray-600 text-center mb-6 md:mb-8">
           Need assistance? Submit a ticket and our team will respond promptly.
         </p>
 
         <!-- Form Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <!-- First Name -->
           <div>
             <label

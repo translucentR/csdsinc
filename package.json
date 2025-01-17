@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "cross-env BASE_PATH=/csdsinc vite build",
-    "preview": "cross-env BASE_PATH=/csdsinc vite preview --host",
+    "build": "cross-env vite build",
+    "preview": "cross-env vite preview --host",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "eslint ."

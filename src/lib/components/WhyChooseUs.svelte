@@ -17,20 +17,22 @@
   }
 </script>
 
-<section class="py-16 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl font-bold text-secondary sm:text-4xl">
+<section class="py-6 md:py-12 lg:py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <div class="text-center mb-6 md:mb-12 lg:mb-16">
+      <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-secondary">
         Why Businesses Trust CSDS
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
       {#each benefits as benefit}
         <div
-          class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
+          class="bg-white p-4 md:p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
         >
-          <div class="text-primary w-12 h-12 mb-4 mx-auto">
+          <div
+            class="text-primary w-10 h-10 md:w-12 md:h-12 mb-3 md:mb-4 mx-auto"
+          >
             <svg
               class="w-full h-full"
               fill="none"
@@ -40,10 +42,12 @@
               {@html getIcon(benefit.icon)}
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-secondary text-center mb-3">
+          <h3
+            class="text-lg md:text-xl font-bold text-secondary text-center mb-2 md:mb-3"
+          >
             {benefit.title}
           </h3>
-          <p class="text-gray-600 text-center">
+          <p class="text-base text-gray-600 text-center">
             {benefit.description}
           </p>
         </div>
