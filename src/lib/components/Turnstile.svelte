@@ -10,6 +10,9 @@
   let turnstileElement: HTMLDivElement;
   let widgetId: string | null = null;
 
+  // Get the current domain
+  const domain = typeof window !== "undefined" ? window.location.hostname : "";
+
   onDestroy(() => {
     if (widgetId) {
       window.turnstile?.remove(widgetId);
