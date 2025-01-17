@@ -9,12 +9,17 @@ const csrf: Handle = async ({ event, resolve }) => {
     ];
 
     const origin = event.request.headers.get('origin');
+    const host = event.request.headers.get('host');
 
-    // Allow POST requests from allowed origins
-    if (event.request.method === 'POST' && origin) {
-        if (allowedOrigins.includes(origin)) {
+    // Allow POST requests from allowed origins or same origin
+    if (event.request.method === 'POST') {
+        // If no origin header, it's same-origin
+        if (!origin || allowedOrigins.includes(origin)) {
+            // Set CORS headers
             event.setHeaders({
-                'Access-Control-Allow-Origin': origin
+                'Access-Control-Allow-Origin': origin || `https://${host}`,
+                'Access-Control-Allow-Methods': 'POST',
+                'Access-Control-Allow-Headers': 'content-type'
             });
             return await resolve(event);
         }
