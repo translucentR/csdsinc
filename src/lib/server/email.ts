@@ -25,17 +25,10 @@ export async function sendSupportNotification(formData: Record<string, string>) 
             Body: {
                 Text: {
                     Data: `
-New support request received:
-
-Priority: ${priority}
-From: ${firstName} ${lastName} (${email})
-Subject: ${subject}
-
-Message:
-${message}
-
----
-This is an automated notification from the CSDS Support System.
+                    !!Contact:${email}!!    
+                    !!Priority: ${priority}!!
+                    From: ${firstName} ${lastName} (${email})
+                    !!AddDetailDescription:${message}!!
                     `.trim()
                 }
             }
