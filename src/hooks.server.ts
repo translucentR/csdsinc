@@ -11,14 +11,19 @@ const csrf: Handle = async ({ event, resolve }) => {
     ];
 
     const host = event.request.headers.get('host');
+    const method = event.request.method;
 
-    // Log request details for debugging
-    console.log('Request details:', {
-        method: event.request.method,
-        host: host,
-        url: event.request.url,
-        headers: Object.fromEntries(event.request.headers)
-    });
+    if (method === 'POST') {
+        console.log('POST Request Details:', {
+            method,
+            host,
+            url: event.request.url,
+            origin: event.request.headers.get('origin'),
+            referer: event.request.headers.get('referer'),
+            'x-forwarded-proto': event.request.headers.get('x-forwarded-proto'),
+            'content-type': event.request.headers.get('content-type')
+        });
+    }
 
     // Allow the request if it's from an allowed host
     if (host && allowedHosts.includes(host)) {
