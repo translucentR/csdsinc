@@ -33,6 +33,13 @@
     event.preventDefault();
     event.stopPropagation();
 
+    console.log("Form submission details:", {
+      origin: window.location.origin,
+      host: window.location.host,
+      protocol: window.location.protocol,
+      action: action,
+    });
+
     if (isSubmitting) {
       return false;
     }
