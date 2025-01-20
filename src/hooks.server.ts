@@ -2,27 +2,27 @@ import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
 
 const csrf: Handle = async ({ event, resolve }) => {
-    const allowedOrigins = [
-        'https://dev.csdsinc.net',
-        'https://csdsinc.net',
-        'http://localhost:5173'
+    const allowedHosts = [
+        'dev.csdsinc.net',
+        'www.dev.csdsinc.net',
+        'csdsinc.net',
+        'www.csdsinc.net',
+        'localhost:5173'
     ];
 
-    const origin = event.request.headers.get('origin');
     const host = event.request.headers.get('host');
 
-    // Allow POST requests from allowed origins or same origin
-    if (event.request.method === 'POST') {
-        // If no origin header, it's same-origin
-        if (!origin || allowedOrigins.includes(origin)) {
-            // Set CORS headers
-            event.setHeaders({
-                'Access-Control-Allow-Origin': origin || `https://${host}`,
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'content-type'
-            });
-            return await resolve(event);
-        }
+    // Log request details for debugging
+    console.log('Request details:', {
+        method: event.request.method,
+        host: host,
+        url: event.request.url,
+        headers: Object.fromEntries(event.request.headers)
+    });
+
+    // Allow the request if it's from an allowed host
+    if (host && allowedHosts.includes(host)) {
+        return await resolve(event);
     }
 
     return await resolve(event);
