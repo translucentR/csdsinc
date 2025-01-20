@@ -35,6 +35,11 @@ async function validateTurnstileToken(token: string, host: string) {
 
 export const actions = {
     default: async ({ request }) => {
+        console.log('Support form submission received:', {
+            method: request.method,
+            headers: Object.fromEntries(request.headers)
+        });
+
         const host = request.headers.get('host') || 'localhost';
         const formData = Object.fromEntries(await request.formData());
         try {

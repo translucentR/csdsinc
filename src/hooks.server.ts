@@ -1,3 +1,5 @@
+console.log('hooks.server.ts loaded');
+
 import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
 
