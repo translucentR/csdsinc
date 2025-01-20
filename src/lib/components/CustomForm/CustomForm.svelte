@@ -67,9 +67,17 @@
       const formData = new FormData(formElement);
       formData.append("cfTurnstileResponse", $turnstileStore.token || "");
 
+      const headers = new Headers();
+      headers.append("x-sveltekit-action", "true");
+      if (document.cookie) {
+        headers.append("cookie", document.cookie);
+      }
+
       const response = await fetch(action, {
         method: method,
         body: formData,
+        headers,
+        credentials: "same-origin",
       });
 
       const result = await response.json();
