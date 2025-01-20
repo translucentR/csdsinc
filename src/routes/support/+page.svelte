@@ -124,6 +124,7 @@
               id="firstName"
               name="firstName"
               required
+              value={formValues?.firstName ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -139,6 +140,7 @@
               id="lastName"
               name="lastName"
               required
+              value={formValues?.lastName ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -152,6 +154,7 @@
               type="text"
               id="company"
               name="company"
+              value={formValues?.company ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               autocomplete="organization"
             />
@@ -166,6 +169,7 @@
               type="url"
               id="website"
               name="website"
+              value={formValues?.website ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -180,6 +184,7 @@
               id="email"
               name="email"
               required
+              value={formValues?.email ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               autocomplete="email"
             />
@@ -194,6 +199,7 @@
               type="tel"
               id="phone"
               name="phone"
+              value={formValues?.phone ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               autocomplete="tel"
             />
@@ -208,6 +214,7 @@
               type="tel"
               id="mobile"
               name="mobile"
+              value={formValues?.mobile ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -221,6 +228,7 @@
             <select
               id="priority"
               name="priority"
+              value={formValues?.priority ?? "normal"}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             >
               <option value="normal">Normal</option>
@@ -238,6 +246,7 @@
               type="text"
               id="subject"
               name="subject"
+              value={formValues?.subject ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -253,7 +262,8 @@
               rows="4"
               required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-            ></textarea>
+              >{formValues?.message ?? ""}</textarea
+            >
           </div>
         </div>
       </CustomForm>

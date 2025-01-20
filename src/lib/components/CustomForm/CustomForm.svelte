@@ -11,7 +11,7 @@
   export let form: BaseFormActionData | undefined = undefined;
   export let method: "get" | "post" | "GET" | "POST" = "POST";
   export let title = "";
-  export let action = "";
+  export let action = window?.location?.pathname || "";
   export let submitText = "Submit";
   export let successMessage = "Form submitted successfully!";
   export let formClass =

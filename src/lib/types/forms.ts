@@ -42,11 +42,16 @@ export interface ContactFormActionData extends BaseFormActionData {
 
 // Support form specific types
 export interface SupportFormData extends BaseFormData {
+    firstName: string;
+    lastName: string;
+    company?: string;
     website?: string;
+    email: string;
     phone?: string;
     mobile?: string;
-    priority?: "normal" | "high" | "urgent";
+    priority?: string;
     subject?: string;
+    message: string;
 }
 
 export interface SupportFormErrors extends BaseFormErrors {
