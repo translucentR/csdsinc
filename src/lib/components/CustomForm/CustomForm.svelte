@@ -29,6 +29,11 @@
       const baseUrl = currentUrl.origin;
       action = action || currentUrl.pathname;
 
+      // Add base path handling
+      if (!action.startsWith("http")) {
+        action = `${baseUrl}${action}`;
+      }
+
       console.log("Form submission URL:", {
         baseUrl,
         action,
