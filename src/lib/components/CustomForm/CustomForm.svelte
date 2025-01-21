@@ -7,11 +7,12 @@
   import FailureMessage from "./FailureMessage.svelte";
   import FormErrorMessages from "./FormErrorMessages.svelte";
   import SubmitButton from "./SubmitButton.svelte";
+  import { browser } from "$app/environment";
 
   export let form: BaseFormActionData | undefined = undefined;
   export let method: "get" | "post" | "GET" | "POST" = "POST";
   export let title = "";
-  export let action = window?.location?.pathname || "";
+  export let action = "";
   export let submitText = "Submit";
   export let successMessage = "Form submitted successfully!";
   export let formClass =
@@ -22,6 +23,21 @@
   let formErrors: Record<string, string> = {};
   let formElement: HTMLFormElement;
 
+  $: if (browser) {
+    const currentUrl = window.location;
+    const protocol = currentUrl.protocol;
+    const baseUrl = `${protocol}//${currentUrl.host}`;
+    action = action || currentUrl.pathname;
+
+    console.log("Form submission URL:", {
+      baseUrl,
+      action,
+      fullUrl: new URL(action, baseUrl).toString(),
+      actualProtocol: protocol,
+      actualOrigin: window.location.origin,
+    });
+  }
+
   $: isSubmitting = status === "submitting";
   $: showSuccessMessage = form?.status === "success";
   $: showErrorMessage =
@@ -29,30 +45,38 @@
     form?.message &&
     !Object.keys(formErrors).length;
 
-  async function handleSubmit(event: SubmitEvent) {
+  const handleSubmit = async (event: SubmitEvent) => {
+    console.log("1. Submit button clicked");
     event.preventDefault();
     event.stopPropagation();
 
-    console.log("Form submission details:", {
+    console.log("2. Form submission initial details:", {
       origin: window.location.origin,
       host: window.location.host,
       protocol: window.location.protocol,
       action: action,
+      hasTurnstileToken: !!$turnstileStore.token,
     });
 
     if (isSubmitting) {
+      console.log("Already submitting, returning");
       return false;
     }
 
     if (!$turnstileStore.token) {
+      console.log("3. No Turnstile token, showing Turnstile");
       turnstileStore.showTurnstile();
 
       const unsubscribe = turnstileStore.subscribe((state) => {
+        console.log("4. Turnstile state changed:", state);
         if (state.token) {
+          console.log("5. Got Turnstile token");
           unsubscribe();
           if (action?.startsWith("/api/")) {
+            console.log("6a. API route detected, using handleFormSubmission");
             handleFormSubmission();
           } else {
+            console.log("6b. Regular route detected, using requestSubmit");
             formElement?.requestSubmit();
           }
         }
@@ -64,45 +88,61 @@
       handleFormSubmission();
       return false;
     }
-  }
+  };
 
   async function handleFormSubmission() {
+    console.log("7. Starting handleFormSubmission");
     status = "submitting";
     formErrors = {};
 
     try {
       const formData = new FormData(formElement);
       formData.append("cfTurnstileResponse", $turnstileStore.token || "");
+      console.log("8. Form data prepared:", Object.fromEntries(formData));
 
-      const headers = new Headers();
-      headers.append("x-sveltekit-action", "true");
-      if (document.cookie) {
-        headers.append("cookie", document.cookie);
-      }
+      const url = new URL(action, window.location.href);
+      console.log("9. About to fetch:", url.toString());
 
-      const response = await fetch(action, {
+      const response = await fetch(url.toString(), {
         method: method,
         body: formData,
-        headers,
+        headers: {
+          "x-sveltekit-action": "true",
+          accept: "application/json",
+          cookie: document.cookie || "",
+        },
         credentials: "same-origin",
       });
 
-      const result = await response.json();
+      console.log("10. Fetch completed, status:", response.status);
+      try {
+        const responseText = await response.text();
+        console.log("Response text:", responseText);
+        const result = JSON.parse(responseText);
 
-      if (result.type === "failure") {
-        status = "error";
-        if (result.data?.errors) {
-          formErrors = result.data.errors;
-        } else if (result.data?.message) {
-          form = { status: "error", message: result.data.message };
+        if (result.type === "failure") {
+          status = "error";
+          if (result.data?.errors) {
+            formErrors = result.data.errors;
+          } else if (result.data?.message) {
+            form = { status: "error", message: result.data.message };
+          }
+          turnstileStore.reset();
+          turnstileComponent?.reset();
+        } else if (result.type === "success") {
+          status = "success";
+          formErrors = {};
+          form = { status: "success" };
+          turnstileStore.reset();
         }
+      } catch (error) {
+        status = "error";
+        form = {
+          status: "error",
+          message: "An unexpected error occurred",
+        };
         turnstileStore.reset();
         turnstileComponent?.reset();
-      } else if (result.type === "success") {
-        status = "success";
-        formErrors = {};
-        form = { status: "success" };
-        turnstileStore.reset();
       }
     } catch (error) {
       status = "error";

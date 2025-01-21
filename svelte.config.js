@@ -7,10 +7,14 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			out: 'build'
+			out: 'build',
+			envPrefix: ''
 		}),
 		paths: {
 			base: process.env.BASE_PATH || ''
+		},
+		csrf: {
+			checkOrigin: true
 		}
 	}
 };

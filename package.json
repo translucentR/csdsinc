@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "cross-env vite build",
-    "preview": "cross-env vite preview --host",
+    "start": "cross-env NODE_ENV=development DEBUG=* ORIGIN=http://localhost:3000 node build/index.js",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "eslint ."
