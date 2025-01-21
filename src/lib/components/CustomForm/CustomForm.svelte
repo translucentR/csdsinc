@@ -25,16 +25,13 @@
 
   $: if (browser) {
     const currentUrl = window.location;
-    const protocol = currentUrl.protocol;
-    const baseUrl = `${protocol}//${currentUrl.host}`;
+    const baseUrl = currentUrl.origin;
     action = action || currentUrl.pathname;
 
     console.log("Form submission URL:", {
       baseUrl,
       action,
-      fullUrl: new URL(action, baseUrl).toString(),
-      actualProtocol: protocol,
-      actualOrigin: window.location.origin,
+      fullUrl: new URL(action, baseUrl).toString()
     });
   }
 
