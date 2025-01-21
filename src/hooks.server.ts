@@ -1,7 +1,7 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
 
-console.log('hooks.server.ts loaded - ' + new Date().toISOString());
+console.log('hooks.server.ts loaded: ' + new Date().toISOString());
 
 const handleRequest: Handle = async ({ event, resolve }) => {
     console.log('\n=== New Request ===', new Date().toISOString());
@@ -26,9 +26,9 @@ const handleRequest: Handle = async ({ event, resolve }) => {
     const response = await resolve(event);
     console.log('Response Status:', response.status);
 
-    if (response.status === 403) {
-        console.log('403 Response Headers:', Object.fromEntries(response.headers));
-        console.log('403 Response URL:', event.url.toString());
+    if (response.status === 400 || response.status === 403) {
+        console.log(`${response.status} Response Headers:`, Object.fromEntries(response.headers));
+        console.log(`${response.status} Response URL:`, event.url.toString());
     }
 
     return response;
