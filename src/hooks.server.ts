@@ -3,6 +3,11 @@ import type { Handle } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
 console.log('hooks.server.ts loaded - ' + new Date().toISOString());
+console.log('Environment variables:', {
+    ORIGIN: env.ORIGIN,
+    NODE_ENV: env.NODE_ENV,
+    PORT: env.PORT
+});
 
 const handleRequest: Handle = async ({ event, resolve }) => {
     console.log('\n=== New Request ===', new Date().toISOString());
