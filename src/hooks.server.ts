@@ -2,11 +2,6 @@ import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
 
 console.log('hooks.server.ts loaded: ' + new Date().toISOString());
-console.log('Raw process.env:', {
-    NODE_ENV: process.env.NODE_ENV,
-    ORIGIN: process.env.ORIGIN,
-    PORT: process.env.PORT
-});
 
 const handleRequest: Handle = async ({ event, resolve }) => {
     console.log('\n=== New Request ===', new Date().toISOString());

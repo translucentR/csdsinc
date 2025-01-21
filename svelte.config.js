@@ -19,10 +19,4 @@ const config = {
 	}
 };
 
-if (process.env.NODE_ENV === 'production') {
-	config.kit.csrf = {
-		checkOrigin: false  // Temporarily disable for debugging
-	};
-}
-
 export default config;
