@@ -14,7 +14,7 @@ const config = {
 			base: process.env.BASE_PATH || ''
 		},
 		csrf: {
-			checkOrigin: false
+			checkOrigin: true
 		}
 	}
 };
