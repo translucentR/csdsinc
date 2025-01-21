@@ -1,12 +1,11 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
-import { env } from '$env/dynamic/private';
 
 console.log('hooks.server.ts loaded: ' + new Date().toISOString());
-console.log('Environment check:', {
-    NODE_ENV: env.NODE_ENV,
-    ORIGIN: env.ORIGIN,
-    PORT: env.PORT
+console.log('Raw process.env:', {
+    NODE_ENV: process.env.NODE_ENV,
+    ORIGIN: process.env.ORIGIN,
+    PORT: process.env.PORT
 });
 
 const handleRequest: Handle = async ({ event, resolve }) => {
