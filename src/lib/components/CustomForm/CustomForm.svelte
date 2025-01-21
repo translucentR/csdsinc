@@ -24,15 +24,23 @@
   let formElement: HTMLFormElement;
 
   $: if (browser) {
-    const currentUrl = window.location;
-    const baseUrl = currentUrl.origin;
-    action = action || currentUrl.pathname;
+    try {
+      const currentUrl = window.location;
+      const baseUrl = currentUrl.origin;
+      action = action || currentUrl.pathname;
 
-    console.log("Form submission URL:", {
-      baseUrl,
-      action,
-      fullUrl: new URL(action, baseUrl).toString()
-    });
+      console.log("Form submission URL:", {
+        baseUrl,
+        action,
+        fullUrl: new URL(action, baseUrl).toString(),
+      });
+    } catch (error) {
+      console.error("Error in CustomForm initialization:", {
+        error: error instanceof Error ? error.message : error,
+        stack: error instanceof Error ? error.stack : undefined,
+        currentUrl: window?.location?.toString(),
+      });
+    }
   }
 
   $: isSubmitting = status === "submitting";
