@@ -68,6 +68,15 @@
       hasTurnstileToken: !!$turnstileStore.token,
     });
 
+    // Add detailed logging here
+    console.log("Pre-submission URL details:", {
+      currentUrl: window.location.toString(),
+      origin: window.location.origin,
+      host: window.location.host,
+      pathname: window.location.pathname,
+      formAction: action,
+    });
+
     if (isSubmitting) {
       console.log("Already submitting, returning");
       return false;
