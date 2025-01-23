@@ -29,25 +29,20 @@
   }
 
   function renderTurnstile() {
-    console.log("Turnstile: Starting render");
     if (typeof window !== "undefined" && window.turnstile) {
       try {
-        console.log("Turnstile: Rendering widget");
         widgetId = window.turnstile.render(turnstileElement, {
           sitekey: "0x4AAAAAAA3B4vFfgbJRbHMw",
           theme: "light",
           callback: (token: string) => {
-            console.log("Turnstile: Success callback received");
             dispatch("success", { token });
           },
           "error-callback": () => {
-            console.log("Turnstile: Error callback received");
             dispatch("error", { error: "Turnstile verification failed" });
             reset();
           },
           "refresh-expired": "auto",
         });
-        console.log("Turnstile: Widget rendered, ID:", widgetId);
       } catch (e) {
         console.error("Turnstile: Render failed:", e);
       }

@@ -14,7 +14,7 @@ const config = {
 			base: process.env.BASE_PATH || ''
 		},
 		csrf: {
-			checkOrigin: true
+			checkOrigin: false // handled in hooks.server.ts
 		}
 	}
 };

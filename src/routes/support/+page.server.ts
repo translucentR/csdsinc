@@ -19,7 +19,6 @@ const supportSchema = z.object({
 });
 
 async function validateTurnstileToken(token: string, host: string) {
-    console.log('Turnstile: Starting validation');
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -30,35 +29,24 @@ async function validateTurnstileToken(token: string, host: string) {
         })
     });
 
-    console.log('Turnstile: Got response:', response.status);
     const data = await response.json();
 
-    console.log('Turnstile: Validation result:', data);
     return data.success;
 }
 
 export const actions = {
     default: async ({ request }) => {
-        console.log('\n=== Support Form Action Start ===');
-        console.log('1. Request received:', {
-            method: request.method,
-            headers: Object.fromEntries(request.headers)
-        });
 
         const host = request.headers.get('host') || 'localhost';
         const formData = Object.fromEntries(await request.formData());
 
-        console.log('2. Form data parsed:', formData);
         try {
 
-            console.log('3. Validating data with schema');
             const validatedData = supportSchema.parse(formData);
 
             // Verify Turnstile token
 
-            console.log('4. About to validate Turnstile token');
             const isValid = await validateTurnstileToken(validatedData.cfTurnstileResponse, host);
-            console.log('5. Turnstile validation result:', isValid);
             if (!isValid) {
                 return fail(400, {
                     status: 'error',
@@ -67,7 +55,6 @@ export const actions = {
                 });
             }
 
-            console.log('6b. CAPTCHA verification succeeded');
             return {
                 status: 'success'
             };

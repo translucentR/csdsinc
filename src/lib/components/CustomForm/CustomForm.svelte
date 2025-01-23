@@ -28,12 +28,6 @@
       const currentUrl = window.location;
       const baseUrl = currentUrl.origin;
       action = action || currentUrl.pathname;
-
-      console.log("Form submission URL:", {
-        baseUrl,
-        action,
-        fullUrl: new URL(action, baseUrl).toString(),
-      });
     } catch (error) {
       console.error("Error in CustomForm initialization:", {
         error: error instanceof Error ? error.message : error,
@@ -51,46 +45,22 @@
     !Object.keys(formErrors).length;
 
   const handleSubmit = async (event: SubmitEvent) => {
-    console.log("1. Submit button clicked");
     event.preventDefault();
     event.stopPropagation();
 
-    console.log("2. Form submission initial details:", {
-      origin: window.location.origin,
-      host: window.location.host,
-      protocol: window.location.protocol,
-      action: action,
-      hasTurnstileToken: !!$turnstileStore.token,
-    });
-
-    // Add detailed logging here
-    console.log("Pre-submission URL details:", {
-      currentUrl: window.location.toString(),
-      origin: window.location.origin,
-      host: window.location.host,
-      pathname: window.location.pathname,
-      formAction: action,
-    });
-
     if (isSubmitting) {
-      console.log("Already submitting, returning");
       return false;
     }
 
     if (!$turnstileStore.token) {
-      console.log("3. No Turnstile token, showing Turnstile");
       turnstileStore.showTurnstile();
 
       const unsubscribe = turnstileStore.subscribe((state) => {
-        console.log("4. Turnstile state changed:", state);
         if (state.token) {
-          console.log("5. Got Turnstile token");
           unsubscribe();
           if (action?.startsWith("/api/")) {
-            console.log("6a. API route detected, using handleFormSubmission");
             handleFormSubmission();
           } else {
-            console.log("6b. Regular route detected, using requestSubmit");
             formElement?.requestSubmit();
           }
         }
@@ -105,17 +75,14 @@
   };
 
   async function handleFormSubmission() {
-    console.log("7. Starting handleFormSubmission");
     status = "submitting";
     formErrors = {};
 
     try {
       const formData = new FormData(formElement);
       formData.append("cfTurnstileResponse", $turnstileStore.token || "");
-      console.log("8. Form data prepared:", Object.fromEntries(formData));
 
       const url = new URL(action, window.location.href);
-      console.log("9. About to fetch:", url.toString());
 
       const response = await fetch(url.toString(), {
         method: method,
@@ -128,10 +95,8 @@
         credentials: "same-origin",
       });
 
-      console.log("10. Fetch completed, status:", response.status);
       try {
         const responseText = await response.text();
-        console.log("Response text:", responseText);
         const result = JSON.parse(responseText);
 
         if (result.type === "failure") {
