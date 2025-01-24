@@ -9,9 +9,16 @@ const sesClient = new SESClient({
     }
 });
 
+const priorityMapping: Record<string, string> = {
+    'normal': 'Priority 3 - Normal Response',
+    'high': 'Priority 2 - Quick Response',
+    'urgent': 'Priority 1 - Emergency Response'
+};
+
 export async function sendSupportNotification(formData: Record<string, string>) {
     const { firstName, lastName, email, subject, message, priority } = formData;
 
+    const priorityLabel = priorityMapping[priority] || 'Priority 3 - Normal Response';
     const emailParams = {
         Source: PRIVATE_AWS_SUPPORT_EMAIL,
         Destination: {
@@ -26,7 +33,7 @@ export async function sendSupportNotification(formData: Record<string, string>) 
                 Text: {
                     Data: `
                     !!Contact:${email}!!    
-                    !!Priority: ${priority}!!
+                    !!Priority: ${priorityLabel}!!
                     From: ${firstName} ${lastName} (${email})
                     !!AddDetailDescription:${message}!!
                     `.trim()

@@ -55,9 +55,6 @@ export const actions = {
                 });
             }
 
-            return {
-                status: 'success'
-            };
             // Submission stage - only reaches here if validation passes
             const emailSent = await sendSupportNotification(validatedData);
 

@@ -5,7 +5,8 @@ import type { Handle } from '@sveltejs/kit';
 const handleRequest: Handle = async ({ event, resolve }) => {
     const allowedOrigins = [
         'https://dev.csdsinc.net',
-        'https://www.rodneymorgan.dev',
+        'https://csdsinc.net',
+        'https://rodneymorgan.dev',
         'http://localhost:5173'  // for local development
     ];
     const origin = event.request.headers.get('origin');

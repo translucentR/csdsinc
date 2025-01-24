@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getIcon } from "$lib/utils/icons";
+
   interface Service {
     title: string;
     description: string;
@@ -8,21 +10,21 @@
   }
 
   const services: Service[] = [
-    {
-      title: "Audio/Video Solutions",
-      description:
-        "Professional AV systems for conference rooms, digital signage, and collaboration spaces.",
-      icon: "video-camera",
-      features: [
-        "Conference Room Design",
-        "Video Conferencing Systems",
-        "Digital Signage",
-        "Sound Systems",
-        "Display Solutions",
-        "AV Network Integration",
-      ],
-      isNew: true,
-    },
+    // {
+    //   title: "Audio/Video Solutions",
+    //   description:
+    //     "Professional AV systems for conference rooms, digital signage, and collaboration spaces.",
+    //   icon: "video-camera",
+    //   features: [
+    //     "Conference Room Design",
+    //     "Video Conferencing Systems",
+    //     "Digital Signage",
+    //     "Sound Systems",
+    //     "Display Solutions",
+    //     "AV Network Integration",
+    //   ],
+    //   isNew: true,
+    // },
     {
       title: "Custom Development & Integrations",
       description:
@@ -35,6 +37,21 @@
         "Analytics & Tracking Systems",
         "Database Management",
         "System Integration",
+      ],
+      isNew: true,
+    },
+    {
+      title: "Web Presence",
+      description:
+        "Enhance your online visibility and digital marketing effectiveness.",
+      icon: "globe",
+      features: [
+        "Search Engine Optimization (SEO)",
+        "Google Business Profile Management",
+        "Social Media Integration",
+        "Local Search Optimization",
+        "Online Reputation Management",
+        "Analytics & Performance Tracking",
       ],
       isNew: true,
     },
@@ -123,9 +140,27 @@
               : 'border border-gray-100'}"
           >
             <div>
-              <h2 class="text-2xl font-bold text-gray-900 mb-2 lg:mb-3">
-                {service.title}
-              </h2>
+              <div class="flex gap-2 items-start">
+                <svg
+                  class="h-6 w-6 text-primary flex-shrink-0 mt-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d={getIcon(service.icon)}
+                  />
+                </svg>
+                <h2
+                  class="text-2xl font-bold text-gray-900 mb-2 lg:mb-3 leading-7"
+                >
+                  {service.title}
+                </h2>
+              </div>
               <p class="text-lg text-gray-600">{service.description}</p>
             </div>
 
@@ -145,7 +180,7 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M5 13l4 4L19 7"
+                      d={getIcon("check")}
                     />
                   </svg>
                   <span class="text-lg text-gray-600">{feature}</span>
