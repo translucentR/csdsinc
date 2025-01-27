@@ -85,9 +85,10 @@
               >
               <input
                 id="name"
-                type="text"
                 name="name"
+                type="text"
                 required
+                autocomplete="name"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm"
               />
             </div>
@@ -98,9 +99,10 @@
               >
               <input
                 id="email"
-                type="email"
                 name="email"
+                type="email"
                 required
+                autocomplete="email"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm"
               />
             </div>
@@ -111,8 +113,9 @@
               >
               <input
                 id="phone"
-                type="tel"
                 name="phone"
+                type="tel"
+                autocomplete="tel"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm"
               />
             </div>
@@ -124,8 +127,9 @@
               >
               <input
                 id="company"
-                type="text"
                 name="company"
+                type="text"
+                autocomplete="organization"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm"
               />
             </div>
