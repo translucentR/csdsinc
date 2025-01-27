@@ -20,44 +20,52 @@
 		<meta property="og:description" content="Comprehensive IT solutions and managed services for businesses. From network security to custom digital solutions." />
 		<meta property="og:image" content="https://csdsinc.net/og-image.jpg" />
 
-		<!-- Google Analytics -->
+		<!-- Analytics Scripts -->
 		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			
-			window.addEventListener('load', function() {
-				setTimeout(() => {
-					const script = document.createElement('script');
-					script.src = 'https://www.googletagmanager.com/gtag/js?id=G-B07QT9XZBS';
-					script.async = true;
-					document.head.appendChild(script);
+			function initializeAnalytics() {
+				const preferences = localStorage.getItem('cookie-preferences');
+				if (!preferences || !JSON.parse(preferences).analytics) {
+					return;
+				}
+
+				// Get the current domain
+				const domain = window.location.hostname;
+				const isProduction = domain === 'csdsinc.net' || domain === 'www.csdsinc.net';
+
+				if (isProduction && !window.gtag) {
+					window.dataLayer = window.dataLayer || [];
+					window.gtag = function(){dataLayer.push(arguments);}
 					
-					script.onload = function() {
-						gtag('js', new Date());
-						gtag('config', 'G-B07QT9XZBS', {
-							cookie_flags: 'SameSite=None;Secure',
-							cookie_domain: 'csdsinc.net'
+					const gaScript = document.createElement('script');
+					gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-B07QT9XZBS';
+					gaScript.async = true;
+					document.head.appendChild(gaScript);
+					
+					gaScript.onload = function() {
+						window.gtag('js', new Date());
+						window.gtag('config', 'G-B07QT9XZBS', {
+							cookie_domain: domain,
+							cookie_flags: 'SameSite=Strict;Secure',
+							cookie_update: false,
+							first_party_collection: true
 						});
 					};
-				}, 2000);
-			});
+				}
+
+				if (isProduction && !window.clarity) {
+					window.clarity = function(){(window.clarity.q=window.clarity.q||[]).push(arguments)};
+					const clarityScript = document.createElement('script');
+					clarityScript.src = "https://www.clarity.ms/tag/p79o0bbni0";
+					clarityScript.async = true;
+					clarityScript.onerror = function() {
+						console.warn('Clarity failed to load');
+					};
+					document.head.appendChild(clarityScript);
+				}
+			}
 		</script>
 
-		<!-- Microsoft Clarity -->
-		<script>
-			window.clarity = window.clarity || function(){(window.clarity.q=window.clarity.q||[]).push(arguments)};
-			
-			window.addEventListener('load', function() {
-				setTimeout(() => {
-					const script = document.createElement('script');
-					script.src = "https://www.clarity.ms/tag/p79o0bbni0";
-					script.async = true;
-					document.head.appendChild(script);
-				}, 2000);
-			});
-		</script>
-
-		<!-- Cloudflare Turnstile -->
+		<!-- Cloudflare Turnstile (always loaded as it's necessary) -->
 		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 		%sveltekit.head%

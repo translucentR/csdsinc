@@ -159,8 +159,8 @@
         <Turnstile
           bind:this={turnstileComponent}
           visible={$turnstileStore.visible}
-          on:success={({ detail }) => turnstileStore.setToken(detail.token)}
-          on:error={({ detail }) => turnstileStore.setError(detail.error)}
+          onSuccess={(token) => turnstileStore.setToken(token)}
+          onError={(error) => turnstileStore.setError(error)}
         />
 
         <FormErrorMessages {formErrors} errorMessage={$turnstileStore.error} />

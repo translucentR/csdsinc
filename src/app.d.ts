@@ -1,17 +1,24 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
-declare global {
-	namespace App {
-		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
-		// interface PageState {}
-		// interface Platform {}
-	}
-}
 
 declare global {
 	interface Window {
+		[key: `ga-disable-${string}`]: boolean;
+		clarity?: {
+			(command: 'consent', consent: boolean): void;
+			(command: string): void;
+		};
+		initializeAnalytics?: () => void;
+		gtag?: (
+			command: 'js' | 'config' | 'event' | 'consent',
+			action?: Date | string | 'update',
+			options?: {
+				cookie_flags?: string;
+				cookie_domain?: string;
+				analytics_storage?: 'granted' | 'denied';
+				[key: string]: string | number | boolean | undefined;
+			}
+		) => void;
 		turnstile: {
 			render: (element: HTMLElement, options: {
 				sitekey: string;
@@ -24,6 +31,9 @@ declare global {
 			remove: (widgetId: string) => void;
 		};
 	}
+
+	/* eslint-disable-next-line no-var */
+	var gtag: Window['gtag'];
 }
 
 export { };
