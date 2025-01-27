@@ -17,9 +17,14 @@ export async function getPDFBuffer(key: string) {
 
     const response = await s3Client.send(command);
     const chunks: Uint8Array[] = [];
+    const stream = response.Body?.transformToWebStream();
+    const reader = stream?.getReader();
+    if (!reader) throw new Error('Failed to get stream reader');
 
-    for await (const chunk of response.Body) {
-        chunks.push(chunk);
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
     }
 
     // Combine all chunks into a single Uint8Array

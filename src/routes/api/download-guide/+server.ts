@@ -44,13 +44,6 @@ export const POST: RequestHandler = async ({ request }) => {
             }, { status: 400 });
         }
 
-        return json({
-            type: 'success',
-            data: {
-                status: 'success'
-            }
-        });
-
         const sent = await sendPDFEmail(validatedData.email, validatedData.name);
         if (!sent) {
             return json({
