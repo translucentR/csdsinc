@@ -12,8 +12,8 @@
 
   let showBanner = false;
   let preferences: CookiePreferences = {
-    necessary: true, // Always true as these are essential
-    analytics: false,
+    necessary: true,
+    analytics: true,
   };
 
   onMount(() => {
@@ -69,50 +69,66 @@
 </script>
 
 {#if showBanner}
-  <div
-    class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 p-4 z-50"
-  >
-    <div
-      class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4"
-    >
-      <div class="text-sm text-gray-600">
-        <p class="mb-2">
+  <div class="fixed inset-0 z-50">
+    <!-- Darkened overlay -->
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+
+    <!-- Cookie consent form at bottom -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <div class="bg-white p-8 shadow-xl max-w-4xl mx-auto mb-4 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4">Cookie Settings</h2>
+        <p class="mb-6 text-gray-600">
           We use cookies to enhance your browsing experience and analyze our
           traffic. Please choose your preferences below.
         </p>
-        <div class="flex items-center gap-4">
-          <label class="flex items-center">
+
+        <div class="space-y-4 mb-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold">Necessary Cookies</h3>
+              <p class="text-sm text-gray-500">
+                Required for the website to function properly
+              </p>
+            </div>
             <input
               type="checkbox"
-              checked={preferences.necessary}
+              checked
               disabled
-              class="rounded border-gray-300 text-blue-600 mr-2"
+              class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary"
             />
-            Necessary
-          </label>
-          <label class="flex items-center">
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold">Analytics Cookies</h3>
+              <p class="text-sm text-gray-500">
+                Help us understand how visitors interact with our website
+              </p>
+            </div>
             <input
               type="checkbox"
               bind:checked={preferences.analytics}
-              class="rounded border-gray-300 text-blue-600 mr-2"
+              class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary"
             />
-            Analytics
-          </label>
+          </div>
         </div>
-      </div>
-      <div class="flex gap-3">
-        <button
-          on:click={() => savePreferences(false)}
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-        >
-          Save Preferences
-        </button>
-        <button
-          on:click={() => savePreferences(true)}
-          class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-        >
-          Accept All
-        </button>
+
+        <div class="flex justify-end space-x-4">
+          <button
+            type="button"
+            class="px-6 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+            on:click={() => savePreferences()}
+          >
+            Save Preferences
+          </button>
+          <button
+            type="button"
+            class="px-6 py-2 bg-primary text-white rounded hover:bg-primary-dark transition-colors"
+            on:click={() => savePreferences(true)}
+          >
+            Accept All
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import { PRIVATE_AWS_ACCESS_KEY_ID, PRIVATE_AWS_SECRET_ACCESS_KEY, PRIVATE_AWS_REGION, PRIVATE_AWS_SUPPORT_EMAIL, PRIVATE_AWS_CONFIGURATION_SET_NAME } from '$env/static/private';
+import { PRIVATE_AWS_ACCESS_KEY_ID, PRIVATE_AWS_SECRET_ACCESS_KEY, PRIVATE_AWS_REGION, PRIVATE_AWS_SUPPORT_EMAIL, PRIVATE_AWS_CONFIGURATION_SET_NAME, PRIVATE_DOWNLOAD_GUIDE_EMAIL } from '$env/static/private';
 
 const sesClient = new SESClient({
     region: PRIVATE_AWS_REGION,
@@ -48,6 +48,46 @@ export async function sendSupportNotification(formData: Record<string, string>) 
         return true;
     } catch (error) {
         console.error('Failed to send email. Full error:', error);
+        return false;
+    }
+}
+
+export async function sendDownloadGuideEmailInternally(formData: Record<string, string>) {
+    const { name, email, phone, company } = formData;
+
+    // Build email body with required fields
+    let emailBody = `
+    Name: ${name}
+    Email: ${email}`;
+
+    // Add optional fields if they exist
+    if (phone) emailBody += `\nPhone: ${phone}`;
+    if (company) emailBody += `\nCompany: ${company}`;
+
+    const emailParams = {
+        Source: PRIVATE_AWS_SUPPORT_EMAIL,
+        Destination: {
+            ToAddresses: [PRIVATE_DOWNLOAD_GUIDE_EMAIL]
+        },
+        ConfigurationSetName: PRIVATE_AWS_CONFIGURATION_SET_NAME,
+        Message: {
+            Subject: {
+                Data: `New Download Guide Request`
+            },
+            Body: {
+                Text: {
+                    Data: emailBody.trim()
+                }
+            }
+        }
+    };
+
+    try {
+
+        await sesClient.send(new SendEmailCommand(emailParams));
+        return true;
+    } catch (error) {
+        console.error('Failed to send Download Guide email. Full error:', error);
         return false;
     }
 } 

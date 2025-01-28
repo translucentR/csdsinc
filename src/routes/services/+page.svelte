@@ -41,7 +41,7 @@
       isNew: true,
     },
     {
-      title: "Web Presence",
+      title: "Online Presence",
       description:
         "Enhance your online visibility and digital marketing effectiveness.",
       icon: "globe",
