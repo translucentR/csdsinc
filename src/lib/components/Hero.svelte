@@ -32,6 +32,8 @@
         class="w-full h-full object-cover"
         loading="eager"
         fetchpriority="high"
+        decoding="async"
+        style="content-visibility: auto"
       />
     </picture>
     <!-- Overlay to ensure text readability -->

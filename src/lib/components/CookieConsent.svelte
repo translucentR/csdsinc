@@ -84,30 +84,34 @@
 
         <div class="space-y-4 mb-6">
           <div class="flex items-center justify-between">
-            <div>
-              <h3 class="font-semibold">Necessary Cookies</h3>
+            <label for="necessary-cookies" class="flex-grow">
+              <span class="font-semibold">Necessary Cookies</span>
               <p class="text-sm text-gray-500">
                 Required for the website to function properly
               </p>
-            </div>
+            </label>
             <input
               type="checkbox"
+              id="necessary-cookies"
               checked
               disabled
+              aria-label="Necessary cookies (required)"
               class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary"
             />
           </div>
 
           <div class="flex items-center justify-between">
-            <div>
-              <h3 class="font-semibold">Analytics Cookies</h3>
+            <label for="analytics-cookies" class="flex-grow">
+              <span class="font-semibold">Analytics Cookies</span>
               <p class="text-sm text-gray-500">
                 Help us understand how visitors interact with our website
               </p>
-            </div>
+            </label>
             <input
               type="checkbox"
+              id="analytics-cookies"
               bind:checked={preferences.analytics}
+              aria-label="Analytics cookies (optional)"
               class="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary"
             />
           </div>
