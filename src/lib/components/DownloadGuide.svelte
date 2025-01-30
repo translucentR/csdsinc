@@ -13,7 +13,7 @@
         <h2
           class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-8"
         >
-          Not Ready To Call Us Just Yet?
+          Not Ready to Call Us Just Yet?
         </h2>
 
         <div class="flex gap-8 items-start">
