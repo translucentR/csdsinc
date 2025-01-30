@@ -7,6 +7,7 @@ const handleRequest: Handle = async ({ event, resolve }) => {
         'https://dev.csdsinc.net',
         'https://csdsinc.net',
         'https://rodneymorgan.dev',
+        'https://f.clarity.ms',
         'http://localhost:5173'  // for local development
     ];
     const origin = event.request.headers.get('origin');
