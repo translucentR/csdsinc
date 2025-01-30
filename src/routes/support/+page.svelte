@@ -44,7 +44,7 @@
       </p>
       <p class="mt-3 text-sm md:text-base text-gray-600 italic">
         Please use the following contact information for technical support
-        requests only. For all other inquiries please use the information and
+        requests only. For all other inquiries, please use the information and
         form on the <a
           href="{base}/contact"
           class="text-[#0066cc] hover:text-[#0052a3] underline">Contact Us</a

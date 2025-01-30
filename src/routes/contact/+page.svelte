@@ -47,7 +47,9 @@
               </div>
               <div>
                 <h3 class="font-semibold text-gray-900 mb-2">Call Us</h3>
-                <p class="text-gray-600">216-529-9019</p>
+                <p class="text-gray-600">
+                  <a href="tel:2165299019" class="underline">216-529-9019</a>
+                </p>
               </div>
             </div>
             <div class="flex items-start space-x-4">
