@@ -20,7 +20,7 @@
           <div class="space-y-4">
             <p class="text-lg text-gray-600">
               Get our free guide: <span class="font-semibold"
-                >What You Should Expect To Pay For IT Support For Your Business</span
+                >What You Should Expect to Pay for IT Support for Your Business</span
               >
             </p>
             <p class="text-gray-600">
