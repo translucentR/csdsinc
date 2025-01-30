@@ -31,7 +31,7 @@
         height="1080"
       />
       <img
-        src="{base}/hero-background.avif"
+        src="{base}/hero-background-mobile.avif"
         alt=""
         width="640"
         height="360"
