@@ -23,4 +23,4 @@ vite.config.ts.timestamp-*
 # PM2
 ecosystem.config.cjs
 
-/CursorHelp
+/.cursor

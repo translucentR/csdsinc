@@ -36,7 +36,7 @@
     microContent: {
       title: "We Handle IT—You Focus on What You Do Best",
       content:
-        "Running a small business means wearing many hats—but IT doesn't have to be one of them. At CSDS, we handle everything related to your computers and technology, so you can focus on on growing your business.",
+        "Running a small business means wearing many hats—but IT doesn't have to be one of them. At CSDS, we handle everything related to your computers and technology, so you can focus on growing your business.",
     },
   };
 
