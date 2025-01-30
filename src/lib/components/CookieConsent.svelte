@@ -47,22 +47,36 @@
 
   function applyPreferences(prefs: CookiePreferences) {
     if (prefs.analytics) {
-      // Enable Analytics
+      // Enable Analytics with proper cookie attributes
       window["ga-disable-G-B07QT9XZBS"] = false;
-      // Properly enable Clarity with consent
-      window.clarity?.("consent");
+      window.gtag?.("consent", "update", {
+        analytics_storage: "granted",
+        cookie_flags: "SameSite=Lax;Secure",
+      });
+
+      // Enable Clarity with consent
+      window.clarity?.("consent", true);
 
       if (typeof gtag === "undefined") {
         window.initializeAnalytics?.();
       }
     } else {
-      // Disable Analytics
+      // Disable all analytics and clear cookies
       window["ga-disable-G-B07QT9XZBS"] = true;
-      // Properly disable Clarity and erase cookies
       window.clarity?.("consent", false);
-
       window.gtag?.("consent", "update", {
         analytics_storage: "denied",
+      });
+
+      // Clear existing cookies
+      document.cookie.split(";").forEach((cookie) => {
+        const [name] = cookie.split("=");
+        if (
+          name.trim().startsWith("_ga") ||
+          name.trim().startsWith("_clarity")
+        ) {
+          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.csdsinc.net; SameSite=Lax; Secure`;
+        }
       });
     }
   }
