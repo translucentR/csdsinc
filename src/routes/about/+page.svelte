@@ -1,5 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import { aboutSchema } from "./structured-data";
   interface Strength {
     title: string;
     description: string;
@@ -39,6 +40,12 @@
     },
   ];
 </script>
+
+<svelte:head>
+  <script type="application/ld+json">
+    {JSON.stringify(aboutSchema)}
+  </script>
+</svelte:head>
 
 <div class="bg-white">
   <!-- Hero Section with Background -->

@@ -2,9 +2,16 @@
   import { base } from "$app/paths";
   import type { ContactFormActionData } from "$lib/types/forms";
   import CustomForm from "$lib/components/CustomForm/CustomForm.svelte";
+  import { contactSchema } from "./structured-data";
 
   export let form: ContactFormActionData | undefined = undefined;
 </script>
+
+<svelte:head>
+  <script type="application/ld+json">
+    {JSON.stringify(contactSchema)}
+  </script>
+</svelte:head>
 
 <div class="bg-gradient-to-b from-gray-50 to-white">
   <div class="relative py-16 sm:py-24">

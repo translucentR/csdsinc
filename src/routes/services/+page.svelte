@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getIcon } from "$lib/utils/icons";
+  import { servicesSchema } from "./structured-data";
 
   interface Service {
     title: string;
@@ -99,6 +100,12 @@
     },
   ];
 </script>
+
+<svelte:head>
+  <script type="application/ld+json">
+    {JSON.stringify(servicesSchema)}
+  </script>
+</svelte:head>
 
 <div class="bg-gray-50">
   <!-- Hero Section -->

@@ -2,6 +2,7 @@
   import { base } from "$app/paths";
   import CustomForm from "$lib/components/CustomForm/CustomForm.svelte";
   import type { SupportFormActionData } from "$lib/types/forms";
+  import { supportSchema } from "./structured-data";
 
   const supportOptions = [
     {
@@ -28,6 +29,12 @@
 
   $: formValues = form?.values ?? {};
 </script>
+
+<svelte:head>
+  <script type="application/ld+json">
+    {JSON.stringify(supportSchema)}
+  </script>
+</svelte:head>
 
 <div class="bg-gray-50 py-8 md:py-12 lg:py-16">
   <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
