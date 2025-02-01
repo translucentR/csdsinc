@@ -31,9 +31,7 @@
 </script>
 
 <svelte:head>
-  <script type="application/ld+json">
-    {JSON.stringify(supportSchema)}
-  </script>
+  {@html `<script type="application/ld+json">${JSON.stringify(supportSchema)}<\/script>`}
 </svelte:head>
 
 <div class="bg-gray-50 py-8 md:py-12 lg:py-16">

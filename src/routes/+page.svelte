@@ -159,7 +159,7 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "ITService",
+      "@type": "LocalBusiness",
       "name": "Computer Systems Development Services",
       "alternateName": "CSDS",
       "url": "https://csdsinc.net",
@@ -243,7 +243,7 @@
       },
       "review": [
         {
-          "@type": "CustomerReview",
+          "@type": "Review",
           "reviewRating": {
             "@type": "Rating",
             "ratingValue": "5"
@@ -259,7 +259,7 @@
           }
         },
         {
-          "@type": "CustomerReview",
+          "@type": "Review",
           "reviewRating": {
             "@type": "Rating",
             "ratingValue": "5"
@@ -275,7 +275,7 @@
           }
         },
         {
-          "@type": "CustomerReview",
+          "@type": "Review",
           "reviewRating": {
             "@type": "Rating",
             "ratingValue": "5"
@@ -303,7 +303,7 @@
           }
         },
         {
-          "@type": "ContactAction",
+          "@type": "Action",
           "name": "Contact Support",
           "target": {
             "@type": "EntryPoint",

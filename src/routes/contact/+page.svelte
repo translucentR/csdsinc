@@ -8,9 +8,7 @@
 </script>
 
 <svelte:head>
-  <script type="application/ld+json">
-    {JSON.stringify(contactSchema)}
-  </script>
+  {@html `<script type="application/ld+json">${JSON.stringify(contactSchema)}<\/script>`}
 </svelte:head>
 
 <div class="bg-gradient-to-b from-gray-50 to-white">

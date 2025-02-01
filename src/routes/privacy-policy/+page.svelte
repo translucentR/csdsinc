@@ -3,9 +3,7 @@
 </script>
 
 <svelte:head>
-  <script type="application/ld+json">
-    {JSON.stringify(privacyPolicySchema)}
-  </script>
+  {@html `<script type="application/ld+json">${JSON.stringify(privacyPolicySchema)}<\/script>`}
 </svelte:head>
 
 <div class="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">

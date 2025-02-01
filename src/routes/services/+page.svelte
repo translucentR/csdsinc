@@ -102,9 +102,7 @@
 </script>
 
 <svelte:head>
-  <script type="application/ld+json">
-    {JSON.stringify(servicesSchema)}
-  </script>
+  {@html `<script type="application/ld+json">${JSON.stringify(servicesSchema)}<\/script>`}
 </svelte:head>
 
 <div class="bg-gray-50">
