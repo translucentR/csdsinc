@@ -156,6 +156,7 @@
 </script>
 
 <svelte:head>
+  <link rel="canonical" href="https://csdsinc.net/" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",

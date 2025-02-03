@@ -8,6 +8,7 @@
 </script>
 
 <svelte:head>
+  <link rel="canonical" href="https://csdsinc.net/contact" />
   {@html `<script type="application/ld+json">${JSON.stringify(contactSchema)}<\/script>`}
 </svelte:head>
 

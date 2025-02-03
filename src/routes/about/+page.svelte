@@ -42,6 +42,7 @@
 </script>
 
 <svelte:head>
+  <link rel="canonical" href="https://csdsinc.net/about" />
   {@html `<script type="application/ld+json">${JSON.stringify(aboutSchema)}<\/script>`}
 </svelte:head>
 

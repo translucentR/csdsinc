@@ -102,6 +102,7 @@
 </script>
 
 <svelte:head>
+  <link rel="canonical" href="https://csdsinc.net/services" />
   {@html `<script type="application/ld+json">${JSON.stringify(servicesSchema)}<\/script>`}
 </svelte:head>
 

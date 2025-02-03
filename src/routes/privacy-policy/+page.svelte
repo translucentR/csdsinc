@@ -3,6 +3,7 @@
 </script>
 
 <svelte:head>
+  <link rel="canonical" href="https://csdsinc.net/privacy-policy" />
   {@html `<script type="application/ld+json">${JSON.stringify(privacyPolicySchema)}<\/script>`}
 </svelte:head>
 
