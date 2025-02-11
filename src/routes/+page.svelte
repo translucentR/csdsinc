@@ -168,6 +168,36 @@
       "telephone": "216-529-9019",
       "email": "info@csdsinc.net",
       "description": "Proactive, responsive IT support tailored to your business needs. We specialize in delivering right-sized IT solutions for businesses of all sizes.",
+      "image": "https://csdsinc.net/logo-r-min.avif",
+      "priceRange": "$150 - $250",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lakewood",
+        "addressRegion": "OH",
+        "postalCode": "44107",
+        "streetAddress": "2174 Arthur Ave",
+        "addressCountry": "US"
+      },
+      "areaServed": [
+        {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": 41.375038,
+            "longitude": -81.636421
+          },
+          "geoRadius": 50
+        },
+        {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": 42.73362,
+            "longitude": -84.553932
+          },
+          "geoRadius": 50
+        }
+      ],
       "knowsAbout": [
         "Managed IT Services",
         "Custom Software Development",

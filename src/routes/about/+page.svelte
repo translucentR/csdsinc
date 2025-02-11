@@ -91,7 +91,7 @@
           Started in 1994, Computer Systems Development Services is a complete
           technology solution provider. We are 100% committed to making sure
           business owners have the most reliable and professional IT service in
-          Cleveland.
+          the midwest.
         </p>
       </div>
     </div>
