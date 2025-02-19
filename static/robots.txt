@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /*?ref=*
 
 # Sitemaps
 Sitemap: https://csdsinc.net/sitemap.xml 

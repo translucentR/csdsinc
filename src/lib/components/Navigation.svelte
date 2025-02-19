@@ -32,6 +32,8 @@
       e.preventDefault();
       goto(href, { replaceState: true });
       location.reload();
+    } else {
+      isMenuOpen = false;
     }
   }
 </script>
