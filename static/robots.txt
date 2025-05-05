@@ -1,5 +1,6 @@
+# Global rules for all robots
 User-agent: *
-Allow: /
+Disallow: /msa
 
 # Sitemaps
 Sitemap: https://csdsinc.net/sitemap.xml 

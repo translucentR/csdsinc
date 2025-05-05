@@ -22,6 +22,11 @@ const handleRequest: Handle = async ({ event, resolve }) => {
         response.headers.set('Access-Control-Allow-Credentials', 'true');
     }
 
+    // Add noindex header for the MSA page
+    if (event.url.pathname === '/msa') {
+        response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    }
+
     return response;
 };
 
