@@ -15,6 +15,17 @@ module.exports = {
       exp_backoff_restart_delay: 100,
       exec_mode: 'fork',
       autorestart: true,
-      time: true
+      time: true,
+      
+      // Log configuration
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      error_file: '/var/log/pm2/csdsinc-error.log',
+      out_file: '/var/log/pm2/csdsinc-out.log',
+      merge_logs: true,
+      
+      // Log rotation settings
+      log_rotate_interval: '1d',    // Rotate daily
+      log_max_size: '10M',         // Rotate when size exceeds 10MB
+      log_rotate_max_files: 10     // Keep last 10 rotated files
     }]
   }

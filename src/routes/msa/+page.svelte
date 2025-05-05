@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
 </script>
 
 <svelte:head>
@@ -12,7 +13,7 @@
 
   <div class="w-full h-screen">
     <object
-      data="/MSA.pdf"
+      data="{base}/MSA.pdf"
       type="application/pdf"
       class="w-full h-full"
       title="Master Service Agreement PDF Document"
