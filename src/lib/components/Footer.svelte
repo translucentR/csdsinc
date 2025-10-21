@@ -113,6 +113,12 @@
           >
             Cookie Preferences
           </button>
+          <a
+            href={`${base}/image-credits`}
+            class="text-gray-300 hover:text-white text-sm transition-colors"
+          >
+            Image Credits
+          </a>
         </div>
       </div>
     </div>

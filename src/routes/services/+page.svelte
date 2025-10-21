@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getIcon } from "$lib/utils/icons";
   import { servicesSchema } from "./structured-data";
+  import { base } from "$app/paths";
 
   interface Service {
     title: string;
@@ -8,6 +9,7 @@
     icon: string;
     features: string[];
     isNew?: boolean;
+    href: string;
   }
 
   const services: Service[] = [
@@ -31,6 +33,7 @@
       description:
         "Specialized solutions tailored to your unique business requirements.",
       icon: "code",
+      href: "custom-development",
       features: [
         "Internal Application Development",
         "Customer-Facing Websites",
@@ -46,6 +49,7 @@
       description:
         "Enhance your online visibility and digital marketing effectiveness.",
       icon: "globe",
+      href: "online-presence",
       features: [
         "Search Engine Optimization (SEO)",
         "Google Business Profile Management",
@@ -61,6 +65,7 @@
       description:
         "Comprehensive IT support and management for your business infrastructure.",
       icon: "server",
+      href: "managed-it-services",
       features: [
         "24/7 System Monitoring",
         "Help Desk Support",
@@ -75,6 +80,7 @@
       description:
         "Secure and scalable cloud services to modernize your business operations.",
       icon: "cloud",
+      href: "cloud-solutions",
       features: [
         "Cloud Migration",
         "Microsoft 365 Management",
@@ -89,6 +95,7 @@
       description:
         "Advanced security solutions to protect your business from modern threats.",
       icon: "shield",
+      href: "cybersecurity",
       features: [
         "Security Assessments",
         "Endpoint Protection",
@@ -139,61 +146,63 @@
               </div>
             </div>
           {/if}
-          <div
-            class="bg-white rounded-xl shadow-sm p-6 lg:p-8 hover:shadow-md transition-shadow flex flex-col h-full
-                    {service.isNew
-              ? 'border-2 border-primary'
-              : 'border border-gray-100'}"
-          >
-            <div>
-              <div class="flex gap-2 items-start">
-                <svg
-                  class="h-6 w-6 text-primary flex-shrink-0 mt-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d={getIcon(service.icon)}
-                  />
-                </svg>
-                <h2
-                  class="text-2xl font-bold text-gray-900 mb-2 lg:mb-3 leading-7"
-                >
-                  {service.title}
-                </h2>
-              </div>
-              <p class="text-lg text-gray-600">{service.description}</p>
-            </div>
-
-            <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-4">
-              Key Features:
-            </h3>
-            <ul class="space-y-3">
-              {#each service.features as feature}
-                <li class="flex items-start space-x-3">
+          <a href="{base}/services/{service.href}" class="block">
+            <div
+              class="bg-white rounded-xl shadow-sm p-6 lg:p-8 hover:shadow-md transition-shadow flex flex-col h-full cursor-pointer
+                      {service.isNew
+                ? 'border-2 border-primary'
+                : 'border border-gray-100'}"
+            >
+              <div>
+                <div class="flex gap-2 items-start">
                   <svg
                     class="h-6 w-6 text-primary flex-shrink-0 mt-1"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    aria-hidden="true"
                   >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d={getIcon("check")}
+                      d={getIcon(service.icon)}
                     />
                   </svg>
-                  <span class="text-lg text-gray-600">{feature}</span>
-                </li>
-              {/each}
-            </ul>
-          </div>
+                  <h2
+                    class="text-2xl font-bold text-gray-900 mb-2 lg:mb-3 leading-7"
+                  >
+                    {service.title}
+                  </h2>
+                </div>
+                <p class="text-lg text-gray-600">{service.description}</p>
+              </div>
+
+              <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-4">
+                Key Features:
+              </h3>
+              <ul class="space-y-3">
+                {#each service.features as feature}
+                  <li class="flex items-start space-x-3">
+                    <svg
+                      class="h-6 w-6 text-primary flex-shrink-0 mt-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d={getIcon("check")}
+                      />
+                    </svg>
+                    <span class="text-lg text-gray-600">{feature}</span>
+                  </li>
+                {/each}
+              </ul>
+            </div>
+          </a>
         </div>
       {/each}
     </div>
