@@ -1,6 +1,7 @@
 # Global rules for all robots
 User-agent: *
 Disallow: /msa
+Disallow: /third-party-terms
 
 # Sitemaps
 Sitemap: https://csdsinc.net/sitemap.xml 
