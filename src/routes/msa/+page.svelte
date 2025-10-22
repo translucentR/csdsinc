@@ -51,7 +51,9 @@
 
   <div class="w-full">
     <article class="w-full max-w-none">
-      <div class="prose prose-neutral md:prose-lg lg:prose-xl max-w-none">
+      <div
+        class="prose prose-neutral md:prose-lg lg:prose-xl max-w-none text-justify"
+      >
         {@html cleanedHtml}
       </div>
     </article>
