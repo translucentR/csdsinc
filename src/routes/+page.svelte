@@ -161,7 +161,8 @@
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "Computer Systems Development Services",
+      "name": "Computer Systems Development Services Incorporated",
+      "legalName": "Computer Systems Development Services Inc.",
       "alternateName": "CSDS",
       "url": "https://csdsinc.net",
       "logo": "https://csdsinc.net/logo-r-min.avif",

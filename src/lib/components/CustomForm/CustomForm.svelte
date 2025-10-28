@@ -52,6 +52,12 @@
       return false;
     }
 
+    // Reset any previous errors
+    formErrors = {};
+    if (form?.status === "error") {
+      form = undefined;
+    }
+
     if (!$turnstileStore.token) {
       turnstileStore.showTurnstile();
 
@@ -106,6 +112,7 @@
           } else if (result.data?.message) {
             form = { status: "error", message: result.data.message };
           }
+          // Reset turnstile for retry
           turnstileStore.reset();
           turnstileComponent?.reset();
         } else if (result.type === "success") {
@@ -194,6 +201,7 @@
           if (result.data?.errors) {
             formErrors = (result.data.errors as Record<string, string>) || {};
           } else {
+            // Reset turnstile for retry
             turnstileStore.reset();
             turnstileComponent?.reset();
           }
@@ -217,8 +225,8 @@
         <Turnstile
           bind:this={turnstileComponent}
           visible={$turnstileStore.visible}
-          on:success={({ detail }) => turnstileStore.setToken(detail.token)}
-          on:error={({ detail }) => turnstileStore.setError(detail.error)}
+          onSuccess={(token) => turnstileStore.setToken(token)}
+          onError={(error) => turnstileStore.setError(error)}
         />
 
         <FormErrorMessages {formErrors} errorMessage={$turnstileStore.error} />
