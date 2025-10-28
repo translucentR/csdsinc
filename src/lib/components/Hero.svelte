@@ -24,14 +24,22 @@
         width="1024"
         height="576"
       />
-      <img
-        src="{base}/hero-background.avif"
-        alt=""
+      <source
+        media="(min-width: 1025px)"
+        srcset="{base}/hero-background.avif"
         width="1920"
         height="1080"
+      />
+      <img
+        src="{base}/hero-background-mobile.avif"
+        alt=""
+        width="640"
+        height="360"
         class="w-full h-full object-cover"
         loading="eager"
         fetchpriority="high"
+        decoding="async"
+        style="content-visibility: auto"
       />
     </picture>
     <!-- Overlay to ensure text readability -->

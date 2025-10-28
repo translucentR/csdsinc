@@ -2,6 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { z } from 'zod';
 import { sendPDFEmail } from '$lib/server/pdf-email';
+import { sendDownloadGuideEmailInternally } from '$lib/server/email';
 import { PRIVATE_TURNSTILE_SECRET_KEY } from '$env/static/private';
 
 const downloadSchema = z.object({
@@ -44,13 +45,6 @@ export const POST: RequestHandler = async ({ request }) => {
             }, { status: 400 });
         }
 
-        return json({
-            type: 'success',
-            data: {
-                status: 'success'
-            }
-        });
-
         const sent = await sendPDFEmail(validatedData.email, validatedData.name);
         if (!sent) {
             return json({
@@ -62,6 +56,7 @@ export const POST: RequestHandler = async ({ request }) => {
                 }
             }, { status: 500 });
         }
+        await sendDownloadGuideEmailInternally(validatedData);
 
         return json({
             type: 'success',

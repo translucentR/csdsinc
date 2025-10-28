@@ -2,6 +2,7 @@
   import "../app.css";
   import Navigation from "$lib/components/Navigation.svelte";
   import Footer from "$lib/components/Footer.svelte";
+  import CookieConsent from "$lib/components/CookieConsent.svelte";
   import { navigationItems } from "$lib/types/navigation";
   import type { SocialLink } from "$lib/types/common";
   let { children } = $props();
@@ -41,3 +42,4 @@
 </main>
 
 <Footer columns={footerColumns} socials={socialLinks} />
+<CookieConsent />

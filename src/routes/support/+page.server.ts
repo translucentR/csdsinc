@@ -30,17 +30,22 @@ async function validateTurnstileToken(token: string, host: string) {
     });
 
     const data = await response.json();
+
     return data.success;
 }
 
 export const actions = {
     default: async ({ request }) => {
+
         const host = request.headers.get('host') || 'localhost';
         const formData = Object.fromEntries(await request.formData());
+
         try {
+
             const validatedData = supportSchema.parse(formData);
 
             // Verify Turnstile token
+
             const isValid = await validateTurnstileToken(validatedData.cfTurnstileResponse, host);
             if (!isValid) {
                 return fail(400, {
@@ -50,9 +55,6 @@ export const actions = {
                 });
             }
 
-            return {
-                status: 'success'
-            };
             // Submission stage - only reaches here if validation passes
             const emailSent = await sendSupportNotification(validatedData);
 

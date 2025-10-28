@@ -1,5 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import { aboutSchema } from "./structured-data";
   interface Strength {
     title: string;
     description: string;
@@ -39,6 +40,11 @@
     },
   ];
 </script>
+
+<svelte:head>
+  <link rel="canonical" href="https://csdsinc.net/about" />
+  {@html `<script type="application/ld+json">${JSON.stringify(aboutSchema)}<\/script>`}
+</svelte:head>
 
 <div class="bg-white">
   <!-- Hero Section with Background -->
@@ -85,7 +91,7 @@
           Started in 1994, Computer Systems Development Services is a complete
           technology solution provider. We are 100% committed to making sure
           business owners have the most reliable and professional IT service in
-          Cleveland.
+          the midwest.
         </p>
       </div>
     </div>

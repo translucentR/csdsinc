@@ -1,14 +1,15 @@
 <script lang="ts">
-  import { onDestroy, createEventDispatcher } from "svelte";
+  import { onDestroy } from "svelte";
 
   export let visible = false;
-  const dispatch = createEventDispatcher<{
-    success: { token: string };
-    error: { error: string };
-  }>();
+  export let onSuccess: ((token: string) => void) | undefined = undefined;
+  export let onError: ((error: string) => void) | undefined = undefined;
 
   let turnstileElement: HTMLDivElement;
   let widgetId: string | null = null;
+
+  // Get the current domain
+  const domain = typeof window !== "undefined" ? window.location.hostname : "";
 
   onDestroy(() => {
     if (widgetId) {
@@ -32,16 +33,16 @@
           sitekey: "0x4AAAAAAA3B4vFfgbJRbHMw",
           theme: "light",
           callback: (token: string) => {
-            dispatch("success", { token });
+            onSuccess?.(token);
           },
           "error-callback": () => {
-            dispatch("error", { error: "Turnstile verification failed" });
+            onError?.("Turnstile verification failed");
             reset();
           },
           "refresh-expired": "auto",
         });
       } catch (e) {
-        console.error("Failed to render Turnstile:", e);
+        console.error("Turnstile: Render failed:", e);
       }
     }
   }

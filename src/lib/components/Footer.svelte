@@ -105,6 +105,14 @@
           >
             Terms of Service
           </a>
+          <button
+            type="button"
+            onclick={() =>
+              window.dispatchEvent(new CustomEvent("show-cookie-preferences"))}
+            class="text-gray-300 hover:text-white text-sm transition-colors"
+          >
+            Cookie Preferences
+          </button>
         </div>
       </div>
     </div>

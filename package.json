@@ -5,15 +5,16 @@
   "scripts": {
     "dev": "vite dev",
     "build": "cross-env vite build",
-    "preview": "cross-env vite preview --host",
+    "start": "node build/index.js",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "eslint ."
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "^5.2.9",
-    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/kit": "^2.20.8",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@types/node": "^22.10.7",
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
     "eslint": "^9.7.0",
@@ -24,7 +25,7 @@
     "tailwindcss": "^3.4.9",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.0.0",
-    "vite": "^5.0.3"
+    "vite": "^5.4.14"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.715.0",

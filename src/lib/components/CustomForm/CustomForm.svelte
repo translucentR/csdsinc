@@ -7,6 +7,7 @@
   import FailureMessage from "./FailureMessage.svelte";
   import FormErrorMessages from "./FormErrorMessages.svelte";
   import SubmitButton from "./SubmitButton.svelte";
+  import { browser } from "$app/environment";
 
   export let form: BaseFormActionData | undefined = undefined;
   export let method: "get" | "post" | "GET" | "POST" = "POST";
@@ -22,6 +23,20 @@
   let formErrors: Record<string, string> = {};
   let formElement: HTMLFormElement;
 
+  $: if (browser) {
+    try {
+      const currentUrl = window.location;
+      const baseUrl = currentUrl.origin;
+      action = action || currentUrl.pathname;
+    } catch (error) {
+      console.error("Error in CustomForm initialization:", {
+        error: error instanceof Error ? error.message : error,
+        stack: error instanceof Error ? error.stack : undefined,
+        currentUrl: window?.location?.toString(),
+      });
+    }
+  }
+
   $: isSubmitting = status === "submitting";
   $: showSuccessMessage = form?.status === "success";
   $: showErrorMessage =
@@ -29,7 +44,7 @@
     form?.message &&
     !Object.keys(formErrors).length;
 
-  async function handleSubmit(event: SubmitEvent) {
+  const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -57,7 +72,7 @@
       handleFormSubmission();
       return false;
     }
-  }
+  };
 
   async function handleFormSubmission() {
     status = "submitting";
@@ -67,27 +82,46 @@
       const formData = new FormData(formElement);
       formData.append("cfTurnstileResponse", $turnstileStore.token || "");
 
-      const response = await fetch(action, {
+      const url = new URL(action, window.location.href);
+
+      const response = await fetch(url.toString(), {
         method: method,
         body: formData,
+        headers: {
+          "x-sveltekit-action": "true",
+          accept: "application/json",
+          cookie: document.cookie || "",
+        },
+        credentials: "same-origin",
       });
 
-      const result = await response.json();
+      try {
+        const responseText = await response.text();
+        const result = JSON.parse(responseText);
 
-      if (result.type === "failure") {
-        status = "error";
-        if (result.data?.errors) {
-          formErrors = result.data.errors;
-        } else if (result.data?.message) {
-          form = { status: "error", message: result.data.message };
+        if (result.type === "failure") {
+          status = "error";
+          if (result.data?.errors) {
+            formErrors = result.data.errors;
+          } else if (result.data?.message) {
+            form = { status: "error", message: result.data.message };
+          }
+          turnstileStore.reset();
+          turnstileComponent?.reset();
+        } else if (result.type === "success") {
+          status = "success";
+          formErrors = {};
+          form = { status: "success" };
+          turnstileStore.reset();
         }
+      } catch (error) {
+        status = "error";
+        form = {
+          status: "error",
+          message: "An unexpected error occurred",
+        };
         turnstileStore.reset();
         turnstileComponent?.reset();
-      } else if (result.type === "success") {
-        status = "success";
-        formErrors = {};
-        form = { status: "success" };
-        turnstileStore.reset();
       }
     } catch (error) {
       status = "error";
@@ -125,8 +159,8 @@
         <Turnstile
           bind:this={turnstileComponent}
           visible={$turnstileStore.visible}
-          on:success={({ detail }) => turnstileStore.setToken(detail.token)}
-          on:error={({ detail }) => turnstileStore.setError(detail.error)}
+          onSuccess={(token) => turnstileStore.setToken(token)}
+          onError={(error) => turnstileStore.setError(error)}
         />
 
         <FormErrorMessages {formErrors} errorMessage={$turnstileStore.error} />

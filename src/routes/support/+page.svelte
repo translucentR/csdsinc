@@ -2,6 +2,7 @@
   import { base } from "$app/paths";
   import CustomForm from "$lib/components/CustomForm/CustomForm.svelte";
   import type { SupportFormActionData } from "$lib/types/forms";
+  import { supportSchema } from "./structured-data";
 
   const supportOptions = [
     {
@@ -29,6 +30,11 @@
   $: formValues = form?.values ?? {};
 </script>
 
+<svelte:head>
+  <link rel="canonical" href="https://csdsinc.net/support" />
+  {@html `<script type="application/ld+json">${JSON.stringify(supportSchema)}<\/script>`}
+</svelte:head>
+
 <div class="bg-gray-50 py-8 md:py-12 lg:py-16">
   <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
     <!-- Hero Section -->
@@ -44,7 +50,7 @@
       </p>
       <p class="mt-3 text-sm md:text-base text-gray-600 italic">
         Please use the following contact information for technical support
-        requests only. For all other inquiries please use the information and
+        requests only. For all other inquiries, please use the information and
         form on the <a
           href="{base}/contact"
           class="text-[#0066cc] hover:text-[#0052a3] underline">Contact Us</a
@@ -124,6 +130,7 @@
               id="firstName"
               name="firstName"
               required
+              value={formValues?.firstName ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -139,6 +146,7 @@
               id="lastName"
               name="lastName"
               required
+              value={formValues?.lastName ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -152,6 +160,7 @@
               type="text"
               id="company"
               name="company"
+              value={formValues?.company ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               autocomplete="organization"
             />
@@ -166,6 +175,7 @@
               type="url"
               id="website"
               name="website"
+              value={formValues?.website ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -180,6 +190,7 @@
               id="email"
               name="email"
               required
+              value={formValues?.email ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               autocomplete="email"
             />
@@ -194,6 +205,7 @@
               type="tel"
               id="phone"
               name="phone"
+              value={formValues?.phone ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
               autocomplete="tel"
             />
@@ -208,6 +220,7 @@
               type="tel"
               id="mobile"
               name="mobile"
+              value={formValues?.mobile ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -221,6 +234,7 @@
             <select
               id="priority"
               name="priority"
+              value={formValues?.priority ?? "normal"}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             >
               <option value="normal">Normal</option>
@@ -238,6 +252,7 @@
               type="text"
               id="subject"
               name="subject"
+              value={formValues?.subject ?? ""}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
             />
           </div>
@@ -253,7 +268,8 @@
               rows="4"
               required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0066cc] focus:ring-[#0066cc]"
-            ></textarea>
+              >{formValues?.message ?? ""}</textarea
+            >
           </div>
         </div>
       </CustomForm>
