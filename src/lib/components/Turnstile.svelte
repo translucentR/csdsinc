@@ -50,7 +50,6 @@
   export function reset() {
     if (widgetId) {
       window.turnstile?.reset(widgetId);
-      widgetId = null;
     }
   }
 </script>
