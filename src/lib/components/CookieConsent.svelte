@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { getRegionInfo, type RegionInfo } from "$lib/utils/region-detection";
 
   type CookiePreferences = {
     necessary: boolean;
@@ -15,8 +16,25 @@
     necessary: true,
     analytics: true,
   };
+  let regionInfo: RegionInfo | null = null;
+  let isEURegion = false;
 
   onMount(() => {
+    // Detect user region for compliance requirements
+    getRegionInfo()
+      .then((info) => {
+        regionInfo = info;
+        isEURegion = info.requiresConsent;
+        console.log("Region detection:", info);
+      })
+      .catch((error) => {
+        console.warn(
+          "Region detection failed, assuming consent required:",
+          error
+        );
+        isEURegion = true; // Conservative default
+      });
+
     const saved = localStorage.getItem("cookie-preferences");
     if (!saved) {
       showBanner = true;
@@ -54,8 +72,23 @@
         cookie_flags: "SameSite=Lax;Secure",
       });
 
-      // Enable Clarity with consent
-      window.clarity?.("consent", true);
+      // Enhanced Clarity consent handling for compliance
+      if (window.clarity) {
+        // Send explicit consent signal to Clarity
+        window.clarity("consent", true);
+
+        // For EU regions, set additional compliance metadata
+        if (isEURegion && regionInfo) {
+          window.clarity(
+            "set",
+            "consent_region",
+            regionInfo.countryCode || "EU"
+          );
+          window.clarity("set", "consent_method", "explicit");
+          window.clarity("set", "consent_timestamp", new Date().toISOString());
+          window.clarity("set", "detection_method", regionInfo.detectionMethod);
+        }
+      }
 
       if (typeof gtag === "undefined") {
         window.initializeAnalytics?.();
@@ -63,7 +96,23 @@
     } else {
       // Disable all analytics and clear cookies
       window["ga-disable-G-B07QT9XZBS"] = true;
-      window.clarity?.("consent", false);
+
+      // Send explicit denial to Clarity for compliance
+      if (window.clarity) {
+        window.clarity("consent", false);
+
+        // For EU regions, log the denial with metadata
+        if (isEURegion && regionInfo) {
+          window.clarity(
+            "set",
+            "consent_region",
+            regionInfo.countryCode || "EU"
+          );
+          window.clarity("set", "consent_method", "denied");
+          window.clarity("set", "consent_timestamp", new Date().toISOString());
+        }
+      }
+
       window.gtag?.("consent", "update", {
         analytics_storage: "denied",
       });
@@ -94,6 +143,12 @@
         <p class="mb-6 text-gray-600">
           We use cookies to enhance your browsing experience and analyze our
           traffic. Please choose your preferences below.
+          {#if isEURegion}
+            <span class="block mt-2 text-sm font-medium text-blue-600">
+              As you're visiting from a region requiring explicit consent, we
+              need your permission to use analytics cookies.
+            </span>
+          {/if}
         </p>
 
         <div class="space-y-4 mb-6">
