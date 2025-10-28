@@ -43,23 +43,65 @@
 					
 					gaScript.onload = function() {
 						window.gtag('js', new Date());
+						
+						// Initialize Google Consent Mode for Clarity compliance
+						window.gtag('consent', 'default', {
+							'analytics_storage': 'denied',
+							'ad_storage': 'denied',
+							'wait_for_update': 500
+						});
+						
 						window.gtag('config', 'G-B07QT9XZBS', {
 							cookie_domain: domain,
 							cookie_flags: 'SameSite=Strict;Secure',
 							cookie_update: false,
 							first_party_collection: true
 						});
+						
+						// Apply stored consent preferences if available
+						const preferences = localStorage.getItem('cookie-preferences');
+						if (preferences) {
+							const prefs = JSON.parse(preferences);
+							window.gtag('consent', 'update', {
+								'analytics_storage': prefs.analytics ? 'granted' : 'denied'
+							});
+						}
 					};
 				}
 
 				if (isProduction && !window.clarity) {
+					// Initialize Clarity with consent queue
 					window.clarity = function(){(window.clarity.q=window.clarity.q||[]).push(arguments)};
+					
 					const clarityScript = document.createElement('script');
 					clarityScript.src = "https://www.clarity.ms/tag/p79o0bbni0";
 					clarityScript.async = true;
 					clarityScript.onerror = function() {
 						console.warn('Clarity failed to load');
 					};
+					
+					// Enhanced consent handling for EU compliance
+					clarityScript.onload = function() {
+						// Check if we have stored consent preferences
+						const preferences = localStorage.getItem('cookie-preferences');
+						if (preferences) {
+							const prefs = JSON.parse(preferences);
+							// Apply consent immediately after Clarity loads
+							window.clarity('consent', prefs.analytics);
+							
+							// Set compliance metadata if available
+							const regionInfo = sessionStorage.getItem('region-info');
+							if (regionInfo) {
+								const region = JSON.parse(regionInfo);
+								if (region.requiresConsent) {
+									window.clarity('set', 'consent_region', region.countryCode || 'EU');
+									window.clarity('set', 'consent_method', prefs.analytics ? 'explicit' : 'denied');
+									window.clarity('set', 'detection_method', region.detectionMethod);
+								}
+							}
+						}
+					};
+					
 					document.head.appendChild(clarityScript);
 				}
 			}
