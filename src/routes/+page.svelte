@@ -156,14 +156,54 @@
 </script>
 
 <svelte:head>
+  <!-- Canonical + Primary SEO -->
+  <title>CSDS — IT Services & Custom Development</title>
+  <meta
+    name="description"
+    content="Proactive, responsive IT support and custom development for SMBs. Managed IT, security, integrations, and Microsoft 365 expertise."
+  />
   <link rel="canonical" href="https://csdsinc.net/" />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CSDS" />
+  <meta property="og:url" content="https://csdsinc.net/" />
+  <meta property="og:title" content="CSDS — IT Services & Custom Development" />
+  <meta
+    property="og:description"
+    content="Proactive, responsive IT support and custom development for SMBs. Managed IT, security, integrations, and Microsoft 365 expertise."
+  />
+  <meta property="og:image" content="https://csdsinc.net/logo-r-min.avif" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:title"
+    content="CSDS — IT Services & Custom Development"
+  />
+  <meta
+    name="twitter:description"
+    content="Proactive, responsive IT support and custom development for SMBs. Managed IT, security, integrations, and Microsoft 365 expertise."
+  />
+  <meta name="twitter:image" content="https://csdsinc.net/logo-r-min.avif" />
+
+  <!-- WebSite sitename schema (helps SERP sitename) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "CSDS",
+      "alternateName": "CSDS — IT Services & Custom Development",
+      "url": "https://csdsinc.net"
+    }
+  </script>
+
+  <!-- LocalBusiness schema (name fixed; legalName retained) -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "Computer Systems Development Services Incorporated",
+      "name": "CSDS",
       "legalName": "Computer Systems Development Services Inc.",
-      "alternateName": "CSDS",
+      "alternateName": "Computer Systems Development Services",
       "url": "https://csdsinc.net",
       "logo": "https://csdsinc.net/logo-r-min.avif",
       "telephone": "216-529-9019",
@@ -173,10 +213,10 @@
       "priceRange": "$150 - $250",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "2174 Arthur Ave",
         "addressLocality": "Lakewood",
         "addressRegion": "OH",
         "postalCode": "44107",
-        "streetAddress": "2174 Arthur Ave",
         "addressCountry": "US"
       },
       "areaServed": [
@@ -284,14 +324,8 @@
       "review": [
         {
           "@type": "Review",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5"
-          },
-          "author": {
-            "@type": "Person",
-            "name": "Dr. Jeffrey Rosenthal"
-          },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+          "author": { "@type": "Person", "name": "Dr. Jeffrey Rosenthal" },
           "reviewBody": "CSDS has been a game-changer for our business. Their quick response times and professional service make all the difference!",
           "publisher": {
             "@type": "Organization",
@@ -300,35 +334,17 @@
         },
         {
           "@type": "Review",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5"
-          },
-          "author": {
-            "@type": "Person",
-            "name": "Sarah Mitchell"
-          },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+          "author": { "@type": "Person", "name": "Sarah Mitchell" },
           "reviewBody": "We've never had such reliable IT support. They truly understand our business needs and provide solutions that work.",
-          "publisher": {
-            "@type": "Organization",
-            "name": "Mitchell Law Group"
-          }
+          "publisher": { "@type": "Organization", "name": "Mitchell Law Group" }
         },
         {
           "@type": "Review",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5"
-          },
-          "author": {
-            "@type": "Person",
-            "name": "Michael Chang"
-          },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+          "author": { "@type": "Person", "name": "Michael Chang" },
           "reviewBody": "Their proactive approach to IT management has prevented countless issues before they could impact our business.",
-          "publisher": {
-            "@type": "Organization",
-            "name": "Chang & Associates"
-          }
+          "publisher": { "@type": "Organization", "name": "Chang & Associates" }
         }
       ],
       "potentialAction": [
