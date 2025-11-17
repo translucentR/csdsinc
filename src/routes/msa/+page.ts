@@ -2,7 +2,7 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch }) => {
     try {
-        const response = await fetch('/MSA_v5.htm');
+        const response = await fetch('/MSA_v8.html');
         const htmlContent = await response.text();
 
         return {
